@@ -24,6 +24,8 @@
 		5E9FFCDF2D44F5FD00724CF5 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCDE2D44F5FD00724CF5 /* Color+.swift */; };
 		5E9FFCE22D44F7C500724CF5 /* ProfileNicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCE12D44F7C500724CF5 /* ProfileNicknameViewController.swift */; };
 		5E9FFCE42D44F7D900724CF5 /* ProfileImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCE32D44F7D900724CF5 /* ProfileImageViewController.swift */; };
+		5E9FFCE82D44F86200724CF5 /* ProfileNicknameDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCE72D44F86100724CF5 /* ProfileNicknameDetailView.swift */; };
+		5E9FFCEA2D45216800724CF5 /* ProfileImageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCE92D45216800724CF5 /* ProfileImageDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,8 @@
 		5E9FFCDE2D44F5FD00724CF5 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		5E9FFCE12D44F7C500724CF5 /* ProfileNicknameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNicknameViewController.swift; sourceTree = "<group>"; };
 		5E9FFCE32D44F7D900724CF5 /* ProfileImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageViewController.swift; sourceTree = "<group>"; };
+		5E9FFCE72D44F86100724CF5 /* ProfileNicknameDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNicknameDetailView.swift; sourceTree = "<group>"; };
+		5E9FFCE92D45216800724CF5 /* ProfileImageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,10 +127,28 @@
 		5E9FFCE02D44F7A300724CF5 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				5E9FFCE12D44F7C500724CF5 /* ProfileNicknameViewController.swift */,
-				5E9FFCE32D44F7D900724CF5 /* ProfileImageViewController.swift */,
+				5E9FFCE52D44F82200724CF5 /* ProfileNickname */,
+				5E9FFCE62D44F83A00724CF5 /* ProfileImage */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		5E9FFCE52D44F82200724CF5 /* ProfileNickname */ = {
+			isa = PBXGroup;
+			children = (
+				5E9FFCE12D44F7C500724CF5 /* ProfileNicknameViewController.swift */,
+				5E9FFCE72D44F86100724CF5 /* ProfileNicknameDetailView.swift */,
+			);
+			path = ProfileNickname;
+			sourceTree = "<group>";
+		};
+		5E9FFCE62D44F83A00724CF5 /* ProfileImage */ = {
+			isa = PBXGroup;
+			children = (
+				5E9FFCE32D44F7D900724CF5 /* ProfileImageViewController.swift */,
+				5E9FFCE92D45216800724CF5 /* ProfileImageDetailView.swift */,
+			);
+			path = ProfileImage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -216,10 +238,12 @@
 				5E9FFCE42D44F7D900724CF5 /* ProfileImageViewController.swift in Sources */,
 				5E9FFCE22D44F7C500724CF5 /* ProfileNicknameViewController.swift in Sources */,
 				5E9FFCDC2D44D7BA00724CF5 /* OnboardingDetailView.swift in Sources */,
+				5E9FFCEA2D45216800724CF5 /* ProfileImageDetailView.swift in Sources */,
 				5E9FFCB52D43431F00724CF5 /* AppDelegate.swift in Sources */,
 				5E9FFCD62D44D6FB00724CF5 /* OnboardingViewController.swift in Sources */,
 				5E9FFCD92D44D76500724CF5 /* BaseView.swift in Sources */,
 				5E9FFCCB2D44D57600724CF5 /* APIKeys.swift in Sources */,
+				5E9FFCE82D44F86200724CF5 /* ProfileNicknameDetailView.swift in Sources */,
 				5E9FFCB72D43431F00724CF5 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

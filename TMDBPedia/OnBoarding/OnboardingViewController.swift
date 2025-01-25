@@ -6,9 +6,7 @@
 //
 
 import UIKit
-import Alamofire
 import SnapKit
-import Kingfisher
 
 final class OnboardingViewController: UIViewController {
 
@@ -21,10 +19,14 @@ final class OnboardingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-       
+        onboardingDetailView.startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
     }
     
-    
+    @objc 
+    func startButtonTapped() {
+        let vc = ProfileNicknameViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 
 
 
