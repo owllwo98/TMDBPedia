@@ -35,6 +35,8 @@ class ProfileNicknameViewController: UIViewController {
     @objc
     func profileButtonTapped() {
         let vc = ProfileImageViewController()
+        vc.profileImageDetailView.selectedProfileButton.setImage(profileNicknameDetailView.profileButton.image(for: .normal), for: .normal)
+        
         navigationController?.pushViewController(vc, animated: true)
     }
     

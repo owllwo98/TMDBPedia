@@ -26,6 +26,8 @@
 		5E9FFCE42D44F7D900724CF5 /* ProfileImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCE32D44F7D900724CF5 /* ProfileImageViewController.swift */; };
 		5E9FFCE82D44F86200724CF5 /* ProfileNicknameDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCE72D44F86100724CF5 /* ProfileNicknameDetailView.swift */; };
 		5E9FFCEA2D45216800724CF5 /* ProfileImageDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCE92D45216800724CF5 /* ProfileImageDetailView.swift */; };
+		5E9FFCEC2D45269900724CF5 /* ProfileImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCEB2D45269900724CF5 /* ProfileImageCollectionViewCell.swift */; };
+		5E9FFCEE2D45271600724CF5 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCED2D45271600724CF5 /* BaseCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +49,8 @@
 		5E9FFCE32D44F7D900724CF5 /* ProfileImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageViewController.swift; sourceTree = "<group>"; };
 		5E9FFCE72D44F86100724CF5 /* ProfileNicknameDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNicknameDetailView.swift; sourceTree = "<group>"; };
 		5E9FFCE92D45216800724CF5 /* ProfileImageDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageDetailView.swift; sourceTree = "<group>"; };
+		5E9FFCEB2D45269900724CF5 /* ProfileImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		5E9FFCED2D45271600724CF5 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5E244EDF2D47971800F241A8 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		5E9FFCA82D43431F00724CF5 = {
 			isa = PBXGroup;
 			children = (
@@ -83,9 +94,10 @@
 		5E9FFCB32D43431F00724CF5 /* TMDBPedia */ = {
 			isa = PBXGroup;
 			children = (
+				5E244EDF2D47971800F241A8 /* Main */,
+				5E9FFCDA2D44D79200724CF5 /* OnBoarding */,
 				5E9FFCE02D44F7A300724CF5 /* Profile */,
 				5E9FFCDD2D44F5EC00724CF5 /* Extension */,
-				5E9FFCDA2D44D79200724CF5 /* OnBoarding */,
 				5E9FFCD72D44D74F00724CF5 /* BaseView */,
 				5E9FFCB42D43431F00724CF5 /* AppDelegate.swift */,
 				5E9FFCB62D43431F00724CF5 /* SceneDelegate.swift */,
@@ -103,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				5E9FFCD82D44D76500724CF5 /* BaseView.swift */,
+				5E9FFCED2D45271600724CF5 /* BaseCollectionViewCell.swift */,
 			);
 			path = BaseView;
 			sourceTree = "<group>";
@@ -147,6 +160,7 @@
 			children = (
 				5E9FFCE32D44F7D900724CF5 /* ProfileImageViewController.swift */,
 				5E9FFCE92D45216800724CF5 /* ProfileImageDetailView.swift */,
+				5E9FFCEB2D45269900724CF5 /* ProfileImageCollectionViewCell.swift */,
 			);
 			path = ProfileImage;
 			sourceTree = "<group>";
@@ -237,11 +251,13 @@
 				5E9FFCDF2D44F5FD00724CF5 /* Color+.swift in Sources */,
 				5E9FFCE42D44F7D900724CF5 /* ProfileImageViewController.swift in Sources */,
 				5E9FFCE22D44F7C500724CF5 /* ProfileNicknameViewController.swift in Sources */,
+				5E9FFCEE2D45271600724CF5 /* BaseCollectionViewCell.swift in Sources */,
 				5E9FFCDC2D44D7BA00724CF5 /* OnboardingDetailView.swift in Sources */,
 				5E9FFCEA2D45216800724CF5 /* ProfileImageDetailView.swift in Sources */,
 				5E9FFCB52D43431F00724CF5 /* AppDelegate.swift in Sources */,
 				5E9FFCD62D44D6FB00724CF5 /* OnboardingViewController.swift in Sources */,
 				5E9FFCD92D44D76500724CF5 /* BaseView.swift in Sources */,
+				5E9FFCEC2D45269900724CF5 /* ProfileImageCollectionViewCell.swift in Sources */,
 				5E9FFCCB2D44D57600724CF5 /* APIKeys.swift in Sources */,
 				5E9FFCE82D44F86200724CF5 /* ProfileNicknameDetailView.swift in Sources */,
 				5E9FFCB72D43431F00724CF5 /* SceneDelegate.swift in Sources */,
