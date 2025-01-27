@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E244EE22D47C52800F241A8 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E244EE12D47C52800F241A8 /* TabBarViewController.swift */; };
+		5E244EE42D47C58D00F241A8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E244EE32D47C58D00F241A8 /* MainViewController.swift */; };
 		5E9FFCB52D43431F00724CF5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCB42D43431F00724CF5 /* AppDelegate.swift */; };
 		5E9FFCB72D43431F00724CF5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCB62D43431F00724CF5 /* SceneDelegate.swift */; };
 		5E9FFCB92D43431F00724CF5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCB82D43431F00724CF5 /* ViewController.swift */; };
@@ -31,6 +33,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5E244EE12D47C52800F241A8 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		5E244EE32D47C58D00F241A8 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		5E9FFCB12D43431F00724CF5 /* TMDBPedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMDBPedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E9FFCB42D43431F00724CF5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E9FFCB62D43431F00724CF5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -70,8 +74,41 @@
 		5E244EDF2D47971800F241A8 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				5E244EE52D47C71500F241A8 /* TopProfileView */,
+				5E244EE62D47C74200F241A8 /* RecentSearchView */,
+				5E244EE72D47C77400F241A8 /* TodaysMovieView */,
+				5E244EE32D47C58D00F241A8 /* MainViewController.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		5E244EE02D47C4F300F241A8 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				5E244EE12D47C52800F241A8 /* TabBarViewController.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		5E244EE52D47C71500F241A8 /* TopProfileView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TopProfileView;
+			sourceTree = "<group>";
+		};
+		5E244EE62D47C74200F241A8 /* RecentSearchView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = RecentSearchView;
+			sourceTree = "<group>";
+		};
+		5E244EE72D47C77400F241A8 /* TodaysMovieView */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TodaysMovieView;
 			sourceTree = "<group>";
 		};
 		5E9FFCA82D43431F00724CF5 = {
@@ -94,6 +131,7 @@
 		5E9FFCB32D43431F00724CF5 /* TMDBPedia */ = {
 			isa = PBXGroup;
 			children = (
+				5E244EE02D47C4F300F241A8 /* TabBar */,
 				5E244EDF2D47971800F241A8 /* Main */,
 				5E9FFCDA2D44D79200724CF5 /* OnBoarding */,
 				5E9FFCE02D44F7A300724CF5 /* Profile */,
@@ -254,12 +292,14 @@
 				5E9FFCEE2D45271600724CF5 /* BaseCollectionViewCell.swift in Sources */,
 				5E9FFCDC2D44D7BA00724CF5 /* OnboardingDetailView.swift in Sources */,
 				5E9FFCEA2D45216800724CF5 /* ProfileImageDetailView.swift in Sources */,
+				5E244EE42D47C58D00F241A8 /* MainViewController.swift in Sources */,
 				5E9FFCB52D43431F00724CF5 /* AppDelegate.swift in Sources */,
 				5E9FFCD62D44D6FB00724CF5 /* OnboardingViewController.swift in Sources */,
 				5E9FFCD92D44D76500724CF5 /* BaseView.swift in Sources */,
 				5E9FFCEC2D45269900724CF5 /* ProfileImageCollectionViewCell.swift in Sources */,
 				5E9FFCCB2D44D57600724CF5 /* APIKeys.swift in Sources */,
 				5E9FFCE82D44F86200724CF5 /* ProfileNicknameDetailView.swift in Sources */,
+				5E244EE22D47C52800F241A8 /* TabBarViewController.swift in Sources */,
 				5E9FFCB72D43431F00724CF5 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
