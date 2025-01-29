@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		5E244EE22D47C52800F241A8 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E244EE12D47C52800F241A8 /* TabBarViewController.swift */; };
 		5E244EE42D47C58D00F241A8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E244EE32D47C58D00F241A8 /* MainViewController.swift */; };
+		5E244EE92D47DACE00F241A8 /* TopProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E244EE82D47DACE00F241A8 /* TopProfileViewController.swift */; };
+		5E244EEB2D47E53500F241A8 /* TodaysMovieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E244EEA2D47E53500F241A8 /* TodaysMovieView.swift */; };
+		5E244EED2D4A364700F241A8 /* RecentSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E244EEC2D4A364700F241A8 /* RecentSearchView.swift */; };
+		5E244EEF2D4A45C000F241A8 /* TodaysMovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E244EEE2D4A45C000F241A8 /* TodaysMovieCollectionViewCell.swift */; };
 		5E9FFCB52D43431F00724CF5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCB42D43431F00724CF5 /* AppDelegate.swift */; };
 		5E9FFCB72D43431F00724CF5 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCB62D43431F00724CF5 /* SceneDelegate.swift */; };
 		5E9FFCB92D43431F00724CF5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9FFCB82D43431F00724CF5 /* ViewController.swift */; };
@@ -35,6 +39,10 @@
 /* Begin PBXFileReference section */
 		5E244EE12D47C52800F241A8 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		5E244EE32D47C58D00F241A8 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		5E244EE82D47DACE00F241A8 /* TopProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopProfileViewController.swift; sourceTree = "<group>"; };
+		5E244EEA2D47E53500F241A8 /* TodaysMovieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysMovieView.swift; sourceTree = "<group>"; };
+		5E244EEC2D4A364700F241A8 /* RecentSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchView.swift; sourceTree = "<group>"; };
+		5E244EEE2D4A45C000F241A8 /* TodaysMovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodaysMovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		5E9FFCB12D43431F00724CF5 /* TMDBPedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMDBPedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E9FFCB42D43431F00724CF5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E9FFCB62D43431F00724CF5 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -93,6 +101,7 @@
 		5E244EE52D47C71500F241A8 /* TopProfileView */ = {
 			isa = PBXGroup;
 			children = (
+				5E244EE82D47DACE00F241A8 /* TopProfileViewController.swift */,
 			);
 			path = TopProfileView;
 			sourceTree = "<group>";
@@ -100,6 +109,7 @@
 		5E244EE62D47C74200F241A8 /* RecentSearchView */ = {
 			isa = PBXGroup;
 			children = (
+				5E244EEC2D4A364700F241A8 /* RecentSearchView.swift */,
 			);
 			path = RecentSearchView;
 			sourceTree = "<group>";
@@ -107,6 +117,8 @@
 		5E244EE72D47C77400F241A8 /* TodaysMovieView */ = {
 			isa = PBXGroup;
 			children = (
+				5E244EEA2D47E53500F241A8 /* TodaysMovieView.swift */,
+				5E244EEE2D4A45C000F241A8 /* TodaysMovieCollectionViewCell.swift */,
 			);
 			path = TodaysMovieView;
 			sourceTree = "<group>";
@@ -290,6 +302,8 @@
 				5E9FFCE42D44F7D900724CF5 /* ProfileImageViewController.swift in Sources */,
 				5E9FFCE22D44F7C500724CF5 /* ProfileNicknameViewController.swift in Sources */,
 				5E9FFCEE2D45271600724CF5 /* BaseCollectionViewCell.swift in Sources */,
+				5E244EEF2D4A45C000F241A8 /* TodaysMovieCollectionViewCell.swift in Sources */,
+				5E244EEB2D47E53500F241A8 /* TodaysMovieView.swift in Sources */,
 				5E9FFCDC2D44D7BA00724CF5 /* OnboardingDetailView.swift in Sources */,
 				5E9FFCEA2D45216800724CF5 /* ProfileImageDetailView.swift in Sources */,
 				5E244EE42D47C58D00F241A8 /* MainViewController.swift in Sources */,
@@ -297,8 +311,10 @@
 				5E9FFCD62D44D6FB00724CF5 /* OnboardingViewController.swift in Sources */,
 				5E9FFCD92D44D76500724CF5 /* BaseView.swift in Sources */,
 				5E9FFCEC2D45269900724CF5 /* ProfileImageCollectionViewCell.swift in Sources */,
+				5E244EED2D4A364700F241A8 /* RecentSearchView.swift in Sources */,
 				5E9FFCCB2D44D57600724CF5 /* APIKeys.swift in Sources */,
 				5E9FFCE82D44F86200724CF5 /* ProfileNicknameDetailView.swift in Sources */,
+				5E244EE92D47DACE00F241A8 /* TopProfileViewController.swift in Sources */,
 				5E244EE22D47C52800F241A8 /* TabBarViewController.swift in Sources */,
 				5E9FFCB72D43431F00724CF5 /* SceneDelegate.swift in Sources */,
 			);

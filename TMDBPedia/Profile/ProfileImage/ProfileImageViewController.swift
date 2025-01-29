@@ -59,8 +59,6 @@ extension ProfileImageViewController: UICollectionViewDelegate, UICollectionView
             return
         }
         
-        
-        
         cell.itemImageView.layer.borderColor = UIColor.CustomBlue?.cgColor
     }
     

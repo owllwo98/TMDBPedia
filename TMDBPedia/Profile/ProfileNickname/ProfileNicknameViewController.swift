@@ -25,11 +25,19 @@ class ProfileNicknameViewController: UIViewController {
         navigationController?.navigationBar.tintColor = .CustomBlue
         
         profileNicknameDetailView.profileButton.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
+        profileNicknameDetailView.completionButton.addTarget(self, action: #selector(completionButtonTapped), for: .touchUpInside)
       
     }
     
     override func viewDidLayoutSubviews() {
         profileNicknameDetailView.profileButton.layer.cornerRadius = profileNicknameDetailView.profileButton.frame.width / 2
+    }
+    
+    @objc
+    func completionButtonTapped() {
+        let vc = MainViewController()
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc
