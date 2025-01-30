@@ -13,7 +13,7 @@ class RecentSearchView: BaseView {
         let label = UILabel()
         label.text = "최근검색어"
         label.textColor = .white
-        label.font = .systemFont(ofSize: 12, weight: .bold)
+        label.font = .systemFont(ofSize: 16, weight: .bold)
         
         return label
     }()
@@ -55,7 +55,7 @@ class RecentSearchView: BaseView {
     
     override func configureLayout() {
         sectionLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().inset(8)
             make.leading.equalToSuperview().inset(8)
         }
         

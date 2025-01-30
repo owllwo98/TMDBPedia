@@ -13,7 +13,7 @@ class TodaysMovieView: BaseView {
         let label = UILabel()
         label.text = "오늘의 영화"
         label.textColor = .white
-        label.font = .systemFont(ofSize: 12, weight: .bold)
+        label.font = .systemFont(ofSize: 16, weight: .bold)
         
         return label
     }()
@@ -26,7 +26,7 @@ class TodaysMovieView: BaseView {
         layout.scrollDirection = .horizontal
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .black
         
         return collectionView
     }()
@@ -38,17 +38,17 @@ class TodaysMovieView: BaseView {
     
     override func configureLayout() {
         sectionLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().inset(8)
             make.leading.equalToSuperview().inset(8)
         }
         
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(sectionLabel.snp.bottom)
+            make.top.equalTo(sectionLabel.snp.bottom).inset(-8)
             make.horizontalEdges.equalToSuperview()
         }
     }
     
     override func configureView() {
-        collectionView.backgroundColor = .purple
+
     }
 }

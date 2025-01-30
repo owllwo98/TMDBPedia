@@ -35,9 +35,14 @@ class ProfileNicknameViewController: UIViewController {
     
     @objc
     func completionButtonTapped() {
-        let vc = MainViewController()
+        UserDefaultsManager.shared.isStart = true
         
-        navigationController?.pushViewController(vc, animated: true)
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first else { return }
+        
+        let tabBarVC = TabBarViewController() 
+        window.rootViewController = tabBarVC
+        window.makeKeyAndVisible()
     }
     
     @objc

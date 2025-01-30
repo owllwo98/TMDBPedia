@@ -10,19 +10,22 @@ import SnapKit
 
 class TopProfileViewController: BaseView {
     
-    let profileButton: UIButton = {
+    lazy var profileButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .gray
+        button.layer.cornerRadius = 10
+        button.clipsToBounds = true
         
         return button
     }()
     
-    private lazy var profileImage: UIImageView = {
+    lazy var profileImage: UIImageView = {
         let image = UIImageView()
-        image.layer.cornerRadius = image.frame.width / 2
         image.layer.borderWidth = 2
         image.layer.borderColor = UIColor.CustomBlue?.cgColor
         image.image = UIImage(named: "profile_0")
+        image.layer.cornerRadius = 25
+        image.clipsToBounds = true
         
         return image
     }()
@@ -31,7 +34,7 @@ class TopProfileViewController: BaseView {
         let label = UILabel()
         label.text = "달콤한 기모청바지"
         label.textColor = .white
-        label.font = .systemFont(ofSize: 12, weight: .bold)
+        label.font = .systemFont(ofSize: 16, weight: .bold)
         
         return label
         
@@ -41,7 +44,7 @@ class TopProfileViewController: BaseView {
         let label = UILabel()
         label.text = "25.01.24 가입"
         label.textColor = .lightGray
-        label.font = .systemFont(ofSize: 8, weight: .semibold)
+        label.font = .systemFont(ofSize: 12, weight: .semibold)
         
         return label
     }()
@@ -54,9 +57,22 @@ class TopProfileViewController: BaseView {
         return image
     }()
     
+    let likeMoviewLabel: UILabel = {
+        let label = UILabel()
+        label.text = "0개의 무비박스 보관중"
+        label.textColor = .white
+        label.backgroundColor = .CustomBlue
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 12, weight: .bold)
+        label.layer.cornerRadius = 10
+        label.clipsToBounds = true
+        
+        return label
+    }()
+    
     override func configureHierarchy() {
         addSubview(profileButton)
-        [profileImage, profileNickname, registrationDate, rightButtonImage].forEach {
+        [profileImage, profileNickname, registrationDate, rightButtonImage, likeMoviewLabel].forEach {
             profileButton.addSubview($0)
         }
     }
@@ -69,8 +85,7 @@ class TopProfileViewController: BaseView {
         
         profileImage.snp.makeConstraints { make in
             make.top.leading.equalToSuperview().inset(8)
-            make.bottom.equalToSuperview().inset(8)
-            make.size.equalTo(80)
+            make.size.equalTo(50)
         }
         
         profileNickname.snp.makeConstraints { make in
@@ -86,6 +101,13 @@ class TopProfileViewController: BaseView {
         rightButtonImage.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(8)
             make.centerY.equalTo(profileImage.snp.centerY)
+        }
+        
+        likeMoviewLabel.snp.makeConstraints { make in
+            make.top.equalTo(profileImage.snp.bottom).inset(-8)
+            make.horizontalEdges.equalToSuperview().inset(8)
+            make.bottom.equalToSuperview().inset(8)
+            make.height.equalTo(40)
         }
     }
     
