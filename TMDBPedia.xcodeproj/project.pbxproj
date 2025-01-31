@@ -50,6 +50,7 @@
 		5EB2DF3F2D4BFB9300361E08 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB2DF3E2D4BFB9300361E08 /* SettingTableViewCell.swift */; };
 		5EB2DF412D4C08F900361E08 /* SearchMovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB2DF402D4C08F900361E08 /* SearchMovieCollectionViewCell.swift */; };
 		5EB2DF432D4C0A3900361E08 /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB2DF422D4C0A3900361E08 /* Search.swift */; };
+		5EB2DF542D4CD55700361E08 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB2DF532D4CD55700361E08 /* UIViewController+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -95,6 +96,7 @@
 		5EB2DF3E2D4BFB9300361E08 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
 		5EB2DF402D4C08F900361E08 /* SearchMovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		5EB2DF422D4C0A3900361E08 /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
+		5EB2DF532D4CD55700361E08 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,6 +281,7 @@
 			children = (
 				5E9FFCDE2D44F5FD00724CF5 /* Color+.swift */,
 				5EB2DF342D4BCA2F00361E08 /* UILabel+.swift */,
+				5EB2DF532D4CD55700361E08 /* UIViewController+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -432,6 +435,7 @@
 				5E244EFA2D4B91C000F241A8 /* NetworkManager.swift in Sources */,
 				5E244EE42D47C58D00F241A8 /* MainViewController.swift in Sources */,
 				5EB2DF412D4C08F900361E08 /* SearchMovieCollectionViewCell.swift in Sources */,
+				5EB2DF542D4CD55700361E08 /* UIViewController+.swift in Sources */,
 				5E9FFCB52D43431F00724CF5 /* AppDelegate.swift in Sources */,
 				5E9FFCD62D44D6FB00724CF5 /* OnboardingViewController.swift in Sources */,
 				5E9FFCD92D44D76500724CF5 /* BaseView.swift in Sources */,

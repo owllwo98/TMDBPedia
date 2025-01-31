@@ -70,6 +70,17 @@ class SettingViewController: UIViewController {
         return label
     }()
     
+    lazy private var tableView = {
+        let view = UITableView()
+        view.delegate = self
+        view.dataSource = self
+        view.rowHeight = 60
+        view.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.id)
+        return view
+    }()
+    
+    var list = ["자주 묻는 질문", "1:1 문의", "알림 설정", "탈퇴하기"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -80,6 +91,8 @@ class SettingViewController: UIViewController {
         
         configureHierarchy()
         configureLayout()
+        
+        tableView.backgroundColor = .black
     }
     
     func configureHierarchy() {
@@ -87,6 +100,7 @@ class SettingViewController: UIViewController {
         [profileImage, profileNickname, registrationDate, rightButtonImage, likeMoviewLabel].forEach {
             profileButton.addSubview($0)
         }
+        view.addSubview(tableView)
     }
     
     func configureLayout() {
@@ -121,17 +135,40 @@ class SettingViewController: UIViewController {
             make.bottom.equalToSuperview().inset(8)
             make.height.equalTo(40)
         }
+        
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(profileButton.snp.bottom).inset(-8)
+            make.horizontalEdges.equalToSuperview().inset(8)
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
     }
 }
 
-//extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        
-//    }
-//    
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        
-//    }
-//    
-//    
-//}
+extension SettingViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return list.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.id, for: indexPath) as! SettingTableViewCell
+        
+        cell.configureData(list[indexPath.row])
+        cell.backgroundColor = .black
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        present(UIViewController.customAlert(), animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if indexPath.row <= 2  {
+            return nil
+        }
+        return indexPath
+    }
+    
+    
+}
