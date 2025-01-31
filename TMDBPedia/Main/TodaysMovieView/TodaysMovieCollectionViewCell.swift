@@ -59,7 +59,7 @@ class TodaysMovieCollectionViewCell: BaseCollectionViewCell {
     }
     
     func configureData(_ list: Movie,_ indexPath: Int) {
-        let url = URL(string: "https://image.tmdb.org/t/p/w500\(list.results[indexPath].poster_path)")
+        let url = URL(string: "https://image.tmdb.org/t/p/w500\(list.results[indexPath].poster_path ?? "")")
         todayMovieImageView.kf.setImage(with: url)
         
         movieTitleLabel.text = list.results[indexPath].title

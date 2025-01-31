@@ -22,7 +22,7 @@ class MainViewController: UIViewController {
         requestData()
         
         self.navigationItem.title = "오늘의 영화"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: nil)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(rightBarButtonItemTapped))
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: ""), style: .plain, target: self, action: nil)
         navigationController?.navigationBar.tintColor = .CustomBlue
@@ -43,6 +43,13 @@ class MainViewController: UIViewController {
         print(#function)
         UserDefaultsManager.shared.like.toggle()
         todaysMovieView.collectionView.reloadData()
+    }
+    
+    @objc
+    func rightBarButtonItemTapped() {
+        let vc = SearchMovieViewController()
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func composingView() {
@@ -100,13 +107,17 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let vc = MovieDetailViewController()
         vc.result = movieList?.results[indexPath.item]
         
+        vc.movieTitle = movieList?.results[indexPath.item].title
+        vc.id = movieList?.results[indexPath.item].id
+        vc.vote_average = movieList?.results[indexPath.item].vote_average
+        vc.release_date = movieList?.results[indexPath.item].release_date
+        
         navigationController?.pushViewController(vc, animated: true)
     }
 }
 
 extension MainViewController {
     func requestData() {
-        print(#function)
         NetworkManager.shared.fetchData(api: .getTrending(page: 1), T: Movie.self) { [weak self] value in
             guard let self = self else {  return }
             movieList = value

@@ -3,7 +3,7 @@ import Alamofire
 
 enum MovieRouter {
     case getTrending(page: Int)
-    case getSearchMovie(keyword: String)
+    case getSearchMovie(keyword: String, page: Int)
     case getMovieImages(movieId: Int)
     case getMovieCredits(movieId: Int)
 }
@@ -38,32 +38,19 @@ extension MovieRouter: URLRequestConvertible {
     }
     
     var headers: HTTPHeaders {
-        return [
-            "Authorization": "Bearer \(APIKey.read)",
-            "accept": "application/json"
-        ]
+        return ["Authorization": "Bearer \(APIKey.read)", "accept": "application/json"]
     }
     
     var parameters: Parameters? {
         switch self {
         case .getTrending(let page):
-            return [
-                "language": "ko-KR",
-                "page": page
-            ]
-        case .getSearchMovie(let keyword):
-            return [
-                "query": keyword,
-                "include_adult": false,
-                "language": "ko-KR",
-                "page": 1
-            ]
+            return ["language": "ko-KR", "page": page]
+        case .getSearchMovie(let keyword, let page):
+            return ["query" : keyword, "include_adult" : false, "language" : "ko-KR", "page" : page]
         case .getMovieImages:
             return nil
         case .getMovieCredits:
-            return [
-                "language": "ko-KR"
-            ]
+            return ["language": "ko-KR"]
         }
     }
     

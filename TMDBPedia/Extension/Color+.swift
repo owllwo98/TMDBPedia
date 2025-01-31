@@ -9,10 +9,6 @@ import UIKit
 
 extension UIColor {
     class var CustomBlue: UIColor? { return UIColor(named: "CustomBlue") }
-
-//    class var secondary: UIColor? { return UIColor(named: "secondary") }
-//
-//    class var tertiary: UIColor? { return UIColor(named: "tertiary") }
 }
 
 func configureTextField(_ textField: UITextField ) {

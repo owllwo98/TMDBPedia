@@ -33,7 +33,6 @@ final class NetworkManager {
         AF.request(api)
             .responseDecodable(of: T.self){ response in
             switch response.result {
-                
             case .success(let value):
                 guard let decodedData = response.value else { return }
                 completion(decodedData)
