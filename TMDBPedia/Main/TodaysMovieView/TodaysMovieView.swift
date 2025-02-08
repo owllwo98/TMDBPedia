@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class TodaysMovieView: BaseView {
+final class TodaysMovieView: BaseView {
     private let sectionLabel: UILabel = {
         let label = UILabel()
         label.text = "오늘의 영화"
@@ -20,10 +20,10 @@ class TodaysMovieView: BaseView {
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 2 - 2, height: UIScreen.main.bounds.width / 1.5)
-        layout.minimumLineSpacing = 4
+        layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 4
         layout.scrollDirection = .horizontal
+//        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 2 - 2, height: UIScreen.main.bounds.height / 3)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .black

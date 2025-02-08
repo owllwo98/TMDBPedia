@@ -11,7 +11,7 @@ class ProfileImageViewController: UIViewController {
 
     var profileImageDetailView = ProfileImageDetailView()
     
-    var selectedCell: IndexPath?
+    var selectedIndex: IndexPath?
     
     override func loadView() {
         self.view = profileImageDetailView
@@ -46,20 +46,30 @@ extension ProfileImageViewController: UICollectionViewDelegate, UICollectionView
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileImageCollectionViewCell.id, for: indexPath) as? ProfileImageCollectionViewCell else { return UICollectionViewCell() }
         
         cell.itemImageView.image = UIImage(named: "profile_\(indexPath.item)")
-        
-        if profileImageDetailView.selectedProfileButton.image(for: .normal) == cell.itemImageView.image {
-            cell.itemImageView.layer.borderColor = UIColor.CustomBlue?.cgColor
-        }
        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let cell = profileImageDetailView.collectionView.cellForItem(at: indexPath) as? ProfileImageCollectionViewCell else {
-            return
-        }
-        
-        cell.itemImageView.layer.borderColor = UIColor.CustomBlue?.cgColor
+        UserDefaultsManager.shared.userProfileImage = "profile_\(indexPath.item)"
+        profileImageDetailView.selectedProfileButton.setImage(UIImage(named: UserDefaultsManager.shared.userProfileImage), for: .normal)
+        radioCell(collectionView: collectionView, newIndexPath: indexPath)
     }
-    
+}
+
+extension ProfileImageViewController {
+    func radioCell(collectionView: UICollectionView, newIndexPath: IndexPath?) {
+        
+        if let previousIndexPath = selectedIndex, let previousCell = collectionView.cellForItem(at: previousIndexPath) as? ProfileImageCollectionViewCell {
+            previousCell.itemImageView.alpha = 50
+            previousCell.itemImageView.layer.borderColor = UIColor.gray.cgColor
+        }
+  
+        if let newIndexPath = newIndexPath, let newCell = collectionView.cellForItem(at: newIndexPath) as? ProfileImageCollectionViewCell {
+            newCell.itemImageView.layer.borderColor = UIColor.CustomBlue?.cgColor
+            newCell.itemImageView.alpha = 100
+        }
+
+        selectedIndex = newIndexPath
+    }
 }

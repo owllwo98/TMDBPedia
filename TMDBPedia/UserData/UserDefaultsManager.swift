@@ -23,37 +23,40 @@ class UserDefaultsManager {
     
     var userNickName: String {
         get {
-            UserDefaults.standard.string(forKey: "userNickName") ?? "NO NAME"
+            UserDefaults.standard.string(forKey: "userNickName") ?? ""
         }
         set {
             UserDefaults.standard.set(newValue, forKey: "userNickName")
         }
     }
     
-    var userBirthday: String {
+    var userProfileImage: String {
         get {
-            UserDefaults.standard.string(forKey: "userBirthday") ?? "NO DATE"
+            UserDefaults.standard.string(forKey: "userProfileImage") ?? "profile_\(Int.random(in: 0...11))"
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "userBirthday")
+            UserDefaults.standard.set(newValue, forKey: "userProfileImage")
         }
     }
     
-    var userLevel: String {
+    var userDate: String {
         get {
-            UserDefaults.standard.string(forKey: "userLevel") ?? "NO LEVEL"
+            UserDefaults.standard.string(forKey: "userDate") ?? ""
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "userLevel")
+            UserDefaults.standard.set(newValue, forKey: "userDate")
         }
     }
     
-    var like: Bool {
+    var likedMovies: [String: Bool] {
         get {
-            UserDefaults.standard.bool(forKey: "like")
+            guard let savedData = UserDefaults.standard.dictionary(forKey: "likedMovies") as? [String: Bool] else {
+                return [:]
+            }
+            return savedData
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "like")
+            UserDefaults.standard.setValue(newValue, forKey: "likedMovies")
         }
     }
 }

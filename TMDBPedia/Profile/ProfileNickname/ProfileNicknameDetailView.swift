@@ -15,9 +15,9 @@ final class ProfileNicknameDetailView : BaseView {
         
         button.layer.borderWidth = 2
         button.layer.borderColor = UIColor.CustomBlue?.cgColor
-        button.setImage(UIImage(named: "profile_\(Int.random(in: 0...11))"), for: .normal)
+        button.setImage(UIImage(named: UserDefaultsManager.shared.userProfileImage), for: .normal)
         button.clipsToBounds = true
-    
+        
         return button
     }()
     
@@ -26,6 +26,10 @@ final class ProfileNicknameDetailView : BaseView {
         textField.borderStyle = .none
         textField.textColor = .white
         textField.tintColor = .white
+        textField.text = UserDefaultsManager.shared.userNickName
+        textField.placeholder = "닉네임을 입력해주세요"
+        textField.setPlaceholder(color: .customGray200)
+        textField.font = .systemFont(ofSize: 12, weight: .bold)
         
         return textField
     }()
@@ -41,20 +45,30 @@ final class ProfileNicknameDetailView : BaseView {
         return label
     }()
     
+    let MbtiLabel: UILabel = {
+        let label = UILabel()
+        label.text = "MBTI"
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 16, weight: .bold)
+        
+        return label
+    }()
+    
     let completionButton: UIButton = {
         let button = UIButton()
         button.setTitle("완료", for: .normal)
-        button.setTitleColor(.customBlue, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         button.layer.cornerRadius = 16
         button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.CustomBlue?.cgColor
         
         return button
     }()
     
+    lazy var stackView = createRadioButton(firstText: "E", secondText: "I")
+    
     override func configureHierarchy() {
-        [profileButton, nicknameTextField, underLine, statusLabel, completionButton].forEach {
+        [profileButton, nicknameTextField, underLine, statusLabel, MbtiLabel, completionButton].forEach {
             addSubview($0)
         }
     }
@@ -79,7 +93,7 @@ final class ProfileNicknameDetailView : BaseView {
         }
         
         underLine.snp.makeConstraints { make in
-            make.top.equalTo(nicknameTextField.snp.bottom).inset(-1)
+            make.top.equalTo(nicknameTextField.snp.bottom).inset(-8)
             make.horizontalEdges.equalTo(nicknameTextField)
             make.height.equalTo(1)
         }
@@ -89,10 +103,66 @@ final class ProfileNicknameDetailView : BaseView {
             make.leading.equalToSuperview().inset(8)
         }
         
-        completionButton.snp.makeConstraints { make in
+        MbtiLabel.snp.makeConstraints { make in
             make.top.equalTo(statusLabel.snp.bottom).inset(-16)
+            make.leading.equalToSuperview().inset(8)
+        }
+        
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(statusLabel.snp.bottom).inset(-16)
+            make.leading.equalTo(MbtiLabel.snp.trailing).inset(-16)
+        }
+        
+        completionButton.snp.makeConstraints { make in
+            make.top.equalTo(stackView.snp.bottom).inset(-16)
             make.horizontalEdges.equalToSuperview().inset(8)
         }
         
+    }
+    
+    func createRadioButton(firstText: String, secondText: String) -> UIStackView {
+        lazy var firstButton: UIButton = {
+            let button = UIButton()
+            button.setTitle(firstText, for: .normal)
+            button.setTitleColor(.white, for: .normal)
+            button.layer.cornerRadius = 20
+            button.layer.borderColor = UIColor.customGray100.cgColor
+            button.layer.borderWidth = 1
+            button.clipsToBounds = true
+            
+            return button
+        }()
+        
+        lazy var secondButton: UIButton = {
+            let button = UIButton()
+            button.setTitle(secondText, for: .normal)
+            button.setTitleColor(.white, for: .normal)
+            button.layer.cornerRadius = 20
+            button.layer.borderColor = UIColor.customGray100.cgColor
+            button.layer.borderWidth = 1
+            button.clipsToBounds = true
+            
+            return button
+        }()
+        
+        let stack : UIStackView = {
+            let stack = UIStackView(arrangedSubviews: [firstButton, secondButton])
+            stack.axis = .vertical
+            stack.spacing = 4
+            
+            return stack
+        }()
+        
+        addSubview(stack)
+                
+        firstButton.snp.makeConstraints { make in
+            make.size.equalTo(40)
+        }
+        
+        secondButton.snp.makeConstraints { make in
+            make.size.equalTo(40)
+        }
+        
+        return stack
     }
 }

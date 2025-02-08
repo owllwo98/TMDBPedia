@@ -20,6 +20,9 @@ final class OnboardingViewController: UIViewController {
         super.viewDidLoad()
 
         onboardingDetailView.startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
+        
+        navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: ""), style: .plain, target: self, action: nil)
+        navigationController?.navigationBar.tintColor = .CustomBlue
     }
     
     @objc 

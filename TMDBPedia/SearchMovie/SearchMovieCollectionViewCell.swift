@@ -30,9 +30,29 @@ class SearchMovieCollectionViewCell: BaseCollectionViewCell {
         return label
     }()
     
+    lazy var genreLabel1: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.layer.cornerRadius = 8
+        label.backgroundColor = .gray
+        label.font = .systemFont(ofSize: 12, weight: .bold)
+        
+        return label
+    }()
+    
+    lazy var genreLabel2: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.layer.cornerRadius = 8
+        label.backgroundColor = .gray
+        label.font = .systemFont(ofSize: 12, weight: .bold)
+        
+        return label
+    }()
+    
     let likeButton: UIButton = {
         let button = UIButton()
-        button.setImage(UserDefaultsManager.shared.like ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart"), for: .normal)
+       
         
         return button
     }()
@@ -48,6 +68,8 @@ class SearchMovieCollectionViewCell: BaseCollectionViewCell {
         contentView.addSubview(posterImageView)
         contentView.addSubview(title)
         contentView.addSubview(releaseDate)
+        contentView.addSubview(genreLabel1)
+        contentView.addSubview(genreLabel2)
         contentView.addSubview(likeButton)
         contentView.addSubview(separatorView)
     }
@@ -67,6 +89,18 @@ class SearchMovieCollectionViewCell: BaseCollectionViewCell {
         releaseDate.snp.makeConstraints { make in
             make.top.equalTo(title.snp.bottom).inset(-4)
             make.leading.equalTo(posterImageView.snp.trailing).inset(-8)
+        }
+        
+        genreLabel1.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(4)
+            make.leading.equalTo(posterImageView.snp.trailing).inset(-8)
+            make.height.equalTo(20)
+        }
+        
+        genreLabel2.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(4)
+            make.leading.equalTo(genreLabel1.snp.trailing).inset(-4)
+            make.height.equalTo(20)
         }
         
         likeButton.snp.makeConstraints { make in
@@ -92,5 +126,23 @@ class SearchMovieCollectionViewCell: BaseCollectionViewCell {
         
         title.text = search.title
         releaseDate.text = search.release_date
+        
+        let movieId = search.id
+        let likedMovies = UserDefaultsManager.shared.likedMovies
+        let isLiked = likedMovies[String(movieId)] ?? false
+        
+        let buttonImage = isLiked ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+        likeButton.setImage(buttonImage, for: .normal)
+        
+        if search.genre_ids.count == 0 {
+            genreLabel1.text = ""
+            genreLabel2.text = ""
+        } else if search.genre_ids.count == 1 {
+            genreLabel1.text = Genre(rawValue: search.genre_ids[0])?.name
+            genreLabel2.text = ""
+        } else {
+            genreLabel1.text = Genre(rawValue: search.genre_ids[0])?.name
+            genreLabel2.text = Genre(rawValue: search.genre_ids[1])?.name
+        }
     }
 }

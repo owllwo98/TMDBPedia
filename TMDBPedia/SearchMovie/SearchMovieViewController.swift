@@ -14,14 +14,16 @@ class SearchMovieViewController: UIViewController {
     var query: String = ""
     var page: Int = 1
     var isEnd: Bool = false
+    var contents: searchDelegate?
     
-    let searchBar: UISearchBar = {
+    var searchBar: UISearchBar = {
         let search = UISearchBar()
         search.backgroundColor = .black
         search.searchTextField.backgroundColor = .gray
         search.tintColor = .white
         search.placeholder = "영화를 검색해보세요"
         search.barTintColor = .black
+        search.searchTextField.textColor = .white
         
         return search
     }()
@@ -43,8 +45,6 @@ class SearchMovieViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        requestData()
 
         self.navigationItem.title = "영화 검색"
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
@@ -56,7 +56,33 @@ class SearchMovieViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         
-        mainLabel.isHidden = false
+        mainLabel.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        movieCollectionView.reloadData()
+    }
+   
+    
+    @objc
+    func likeButtonTapped(_ sender: UIButton) {
+        let movieId = movieList[sender.tag].id
+        var likedMovies = UserDefaultsManager.shared.likedMovies
+        
+        if let currentLikeStatus = likedMovies[String(movieId)] {
+            if currentLikeStatus {
+                likedMovies[String(movieId)] = nil
+            } else {
+                likedMovies[String(movieId)] = true
+            }
+        } else {
+            likedMovies[String(movieId)] = true
+        }
+        
+        UserDefaultsManager.shared.likedMovies = likedMovies
+
+        movieCollectionView.reloadData()
     }
     
     func configureHierarchy() {
@@ -112,6 +138,18 @@ extension SearchMovieViewController: UICollectionViewDelegate, UICollectionViewD
         
         cell.configureData(movieList[indexPath.item])
         
+        cell.likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
+        cell.likeButton.tag = indexPath.item
+        
+        DispatchQueue.main.async {
+            cell.genreLabel1.layer.cornerRadius = 4
+            cell.genreLabel1.clipsToBounds = true
+            cell.genreLabel2.layer.cornerRadius = 4
+            cell.genreLabel2.clipsToBounds = true
+            cell.posterImageView.layer.cornerRadius = 8
+            cell.posterImageView.clipsToBounds = true
+        }
+        
         return cell
     }
     
@@ -119,7 +157,6 @@ extension SearchMovieViewController: UICollectionViewDelegate, UICollectionViewD
         let vc = MovieDetailViewController()
         vc.result = movieList[indexPath.item]
         vc.id = movieList[indexPath.item].id
-        
         
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -149,6 +186,11 @@ extension SearchMovieViewController: UISearchBarDelegate {
             return
         }
         
+        guard let search = searchBar.text else {
+            return
+        }
+        contents?.searchReceived(value: search)
+        
         page = 1
         query = text
         requestData()
@@ -168,7 +210,7 @@ extension SearchMovieViewController {
             
             if value.results.isEmpty {
                 mainLabel.isHidden = false
-                mainLabel.text = "검색 결과가 없어요."
+                mainLabel.text = "원하는 검색결과를 찾지 못했습니다."
                 movieList = value.results
                 movieCollectionView.reloadData()
             } else {

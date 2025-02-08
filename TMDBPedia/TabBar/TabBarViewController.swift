@@ -19,16 +19,17 @@ class TabBarViewController: UITabBarController {
     
     func configureTabBarController() {
         let firstVC = MainViewController()
-        firstVC.tabBarItem.image = UIImage(systemName: "chart.line.uptrend.xyaxis.circle")
-        firstVC.tabBarItem.selectedImage = UIImage(systemName: "chart.line.uptrend.xyaxis.circle.fill")
+        firstVC.title = "CINEMA"
+        firstVC.tabBarItem.image = UIImage(systemName: "popcorn")
+        firstVC.tabBarItem.selectedImage = UIImage(systemName: "popcorn.fill")
         let firstNAV = UINavigationController(rootViewController: firstVC)
         
         let secondVC = SearchMovieViewController()
-        secondVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "play.square.stack"), selectedImage: UIImage(systemName: "play.square.stack.fill"))
+        secondVC.tabBarItem = UITabBarItem(title: "UPCOMING", image: UIImage(systemName: "film.stack"), selectedImage: UIImage(systemName: "film.stack.fill"))
         let secondNav = UINavigationController(rootViewController: secondVC)
         
         let thirdVC = SettingViewController()
-        thirdVC.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "magnifyingglass"), selectedImage: UIImage(systemName: "magnifyingglass.circle.fill"))
+        thirdVC.tabBarItem = UITabBarItem(title: "PROFILE", image: UIImage(systemName: "person.crop.circle"), selectedImage: UIImage(systemName: "person.crop.circle.fill"))
         let thirdNav = UINavigationController(rootViewController: thirdVC)
         
         setViewControllers([firstNAV, secondNav, thirdNav], animated: true)

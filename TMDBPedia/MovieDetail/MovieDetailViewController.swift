@@ -9,7 +9,7 @@ import UIKit
 import Alamofire
 import SnapKit
 
-class MovieDetailViewController: UIViewController {
+final class MovieDetailViewController: UIViewController {
     
     var result: Result?
     
@@ -37,6 +37,25 @@ class MovieDetailViewController: UIViewController {
         return label
     }()
     
+    private lazy var genreLabel: UILabel = {
+        let label = UILabel()
+        
+        if result?.genre_ids.count ?? 0 == 0 {
+            UILabel.addImageLabel(label, "", "film.fill")
+            return label
+        } else if result?.genre_ids.count ?? 0 == 1 {
+            let genre1 = Genre(rawValue: result?.genre_ids[0] ?? 0)?.name
+            UILabel.addImageLabel(label, (genre1 ?? ""), "film.fill")
+            return label
+        } else {
+            let genre1 = Genre(rawValue: result?.genre_ids[0] ?? 0)?.name
+            let genre2 = Genre(rawValue: result?.genre_ids[1] ?? 0)?.name
+    
+            UILabel.addImageLabel(label, (genre1 ?? "") + "," + (genre2 ?? ""), "film.fill")
+            return label
+        }
+    }()
+    
     let castLabel: UILabel = {
         let label = UILabel()
         label.text = "Cast"
@@ -55,6 +74,40 @@ class MovieDetailViewController: UIViewController {
         return label
     }()
     
+    private let sectionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Synopsis"
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 16, weight: .bold)
+        
+        return label
+    }()
+    
+    private let moreButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("More", for: .normal)
+        button.setTitleColor(.CustomBlue, for: .normal)
+        
+        return button
+    }()
+    
+    private lazy var Synopsis: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 3
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 12, weight: .bold)
+        label.text = result?.overview
+        
+        return label
+    }()
+    
+    private let backPage: UIPageControl = {
+        let pc = UIPageControl()
+        
+        
+        return pc
+    }()
+    
     let verticalScrollView: UIScrollView = UIScrollView()
     let contentView = UIView()
     
@@ -70,7 +123,8 @@ class MovieDetailViewController: UIViewController {
         requestData()
         
         self.navigationItem.title = result?.title
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: UserDefaultsManager.shared.like ? "heart.fill" : "heart"), style: .plain, target: self, action: nil)
+        updateLikeButton()
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: ""), style: .plain, target: self, action: #selector(likeButtonTapped))
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: ""), style: .plain, target: self, action: nil)
         navigationController?.navigationBar.tintColor = .CustomBlue
@@ -79,11 +133,35 @@ class MovieDetailViewController: UIViewController {
         configureLayout()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateLikeButton()
+    }
+    
+    @objc
+    func likeButtonTapped(_ sender: UIButton) {
+        let movieId = result?.id ?? 0
+        var likedMovies = UserDefaultsManager.shared.likedMovies
+        
+        if let currentLikeStatus = likedMovies[String(movieId)] {
+            if currentLikeStatus {
+                likedMovies[String(movieId)] = nil
+            } else {
+                likedMovies[String(movieId)] = true
+            }
+        } else {
+            likedMovies[String(movieId)] = true
+        }
+        
+        UserDefaultsManager.shared.likedMovies = likedMovies
+        updateLikeButton()
+    }
+    
     func configureHierarchy() {
         view.addSubview(verticalScrollView)
         verticalScrollView.addSubview(contentView)
         
-        [backDropCollectionView, releaseDate, voteaverage, castLabel, castCollectionView, posterLabel, posterCollectionView].forEach {
+        [backDropCollectionView, releaseDate, voteaverage, genreLabel, sectionLabel, moreButton, Synopsis, castLabel, castCollectionView, posterLabel, posterCollectionView].forEach {
             contentView.addSubview($0)
         }
         
@@ -119,16 +197,36 @@ class MovieDetailViewController: UIViewController {
         
         releaseDate.snp.makeConstraints { make in
             make.top.equalTo(backDropCollectionView.snp.bottom).inset(-8)
-            make.leading.equalToSuperview().inset(32)
+            make.trailing.equalTo(voteaverage.snp.leading).inset(-8)
         }
         
         voteaverage.snp.makeConstraints { make in
             make.top.equalTo(backDropCollectionView.snp.bottom).inset(-8)
-            make.leading.equalTo(releaseDate.snp.trailing).inset(-8)
+            make.centerX.equalToSuperview()
+        }
+        
+        genreLabel.snp.makeConstraints { make in
+            make.top.equalTo(backDropCollectionView.snp.bottom).inset(-8)
+            make.leading.equalTo(voteaverage.snp.trailing).inset(-8)
+        }
+        
+        sectionLabel.snp.makeConstraints { make in
+            make.top.equalTo(releaseDate.snp.bottom).inset(-8)
+            make.leading.equalToSuperview().inset(8)
+        }
+        
+        moreButton.snp.makeConstraints { make in
+            make.centerY.equalTo(sectionLabel.snp.centerY)
+            make.trailing.equalToSuperview().inset(8)
+        }
+        
+        Synopsis.snp.makeConstraints { make in
+            make.top.equalTo(sectionLabel.snp.bottom).inset(-8)
+            make.horizontalEdges.equalToSuperview().inset(8)
         }
         
         castLabel.snp.makeConstraints { make in
-            make.top.equalTo(voteaverage.snp.bottom).inset(-8)
+            make.top.equalTo(Synopsis.snp.bottom).inset(-8)
             make.leading.equalToSuperview().inset(8)
         }
         
@@ -151,8 +249,6 @@ class MovieDetailViewController: UIViewController {
             
         }
     }
-    
-    
 }
 
 extension MovieDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -253,5 +349,11 @@ extension MovieDetailViewController {
         collectionView.backgroundColor = .white
         
         return collectionView
+    }
+    
+    private func updateLikeButton() {
+        let movieId = result?.id ?? 0
+        let heartImage = UIImage(systemName: UserDefaultsManager.shared.likedMovies[String(movieId)] == true ? "heart.fill" : "heart")
+        self.navigationItem.rightBarButtonItem?.image = heartImage
     }
 }

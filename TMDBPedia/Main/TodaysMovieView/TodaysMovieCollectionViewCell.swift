@@ -55,7 +55,8 @@ class TodaysMovieCollectionViewCell: BaseCollectionViewCell {
         moviePlotLabel.numberOfLines = 2
         moviePlotLabel.font = .systemFont(ofSize: 8, weight: .bold)
         
-        
+        todayMovieImageView.layer.cornerRadius = 8
+        todayMovieImageView.clipsToBounds = true
     }
     
     func configureData(_ list: Movie,_ indexPath: Int) {
@@ -64,6 +65,12 @@ class TodaysMovieCollectionViewCell: BaseCollectionViewCell {
         
         movieTitleLabel.text = list.results[indexPath].title
         moviePlotLabel.text = list.results[indexPath].overview == "" ? "영화 줄거리가 \n 없어요" : list.results[indexPath].overview
-        likeButton.setImage(UIImage(systemName: UserDefaultsManager.shared.like ? "heart.fill" : "heart"), for: .normal)
+
+        let movieId = list.results[indexPath].id
+        let likedMovies = UserDefaultsManager.shared.likedMovies
+        let isLiked = likedMovies[String(movieId)] ?? false
+        
+        let buttonImage = isLiked ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+        likeButton.setImage(buttonImage, for: .normal)
     }
 }

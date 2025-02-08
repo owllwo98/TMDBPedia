@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class RecentSearchView: BaseView {
+final class RecentSearchView: BaseView {
     let sectionLabel: UILabel = {
         let label = UILabel()
         label.text = "최근검색어"
@@ -18,13 +18,13 @@ class RecentSearchView: BaseView {
         return label
     }()
     
-    let deleteLabel: UILabel = {
-        let label = UILabel()
-        label.text = "전체 삭제"
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 12, weight: .bold)
+    let deleteButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("전체 삭제", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .bold)
         
-        return label
+        return button
     }()
     
     let baseView: UIView = {
@@ -38,18 +38,31 @@ class RecentSearchView: BaseView {
         let label = UILabel()
         label.text = "최근 검색어 내역이 없습니다."
         label.textColor = .gray
-        label.font = .systemFont(ofSize: 8, weight: .semibold)
+        label.font = .systemFont(ofSize: 12, weight: .semibold)
         
         return label
     }()
     
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = 4
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: 60, height: 30)
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .black
+        
+        return collectionView
+    }()
+    
     
     override func configureHierarchy() {
-        [sectionLabel, deleteLabel, baseView].forEach {
+        [sectionLabel, deleteButton, baseView].forEach {
             addSubview($0)
         }
         
         baseView.addSubview(emptyLabel)
+        baseView.addSubview(collectionView)
         
     }
     
@@ -59,7 +72,7 @@ class RecentSearchView: BaseView {
             make.leading.equalToSuperview().inset(8)
         }
         
-        deleteLabel.snp.makeConstraints { make in
+        deleteButton.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.trailing.equalToSuperview().inset(8)
             make.centerY.equalTo(sectionLabel)
@@ -68,11 +81,21 @@ class RecentSearchView: BaseView {
         baseView.snp.makeConstraints { make in
             make.top.equalTo(sectionLabel.snp.bottom).inset(-8)
             make.horizontalEdges.equalToSuperview()
-            make.height.equalTo(40)
+            make.height.equalTo(60)
+        }
+        
+        emptyLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        
+        collectionView.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalToSuperview().inset(4)
+            make.height.equalTo(30)
+            make.centerY.equalTo(baseView.snp.centerY)
         }
     }
     
     override func configureView() {
-        
+
     }
 }

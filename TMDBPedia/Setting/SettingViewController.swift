@@ -21,9 +21,9 @@ class SettingViewController: UIViewController {
     
     lazy var profileImage: UIImageView = {
         let image = UIImageView()
-        image.layer.borderWidth = 2
+        image.layer.borderWidth = 3
         image.layer.borderColor = UIColor.CustomBlue?.cgColor
-        image.image = UIImage(named: "profile_0")
+        image.image = UIImage(named: UserDefaultsManager.shared.userProfileImage)
         image.layer.cornerRadius = 25
         image.clipsToBounds = true
         
@@ -32,7 +32,7 @@ class SettingViewController: UIViewController {
     
     private let profileNickname: UILabel = {
         let label = UILabel()
-        label.text = "달콤한 기모청바지"
+        label.text = UserDefaultsManager.shared.userNickName
         label.textColor = .white
         label.font = .systemFont(ofSize: 16, weight: .bold)
         
@@ -42,7 +42,7 @@ class SettingViewController: UIViewController {
     
     private let registrationDate: UILabel = {
         let label = UILabel()
-        label.text = "25.01.24 가입"
+        label.text = UserDefaultsManager.shared.userDate
         label.textColor = .lightGray
         label.font = .systemFont(ofSize: 12, weight: .semibold)
         
@@ -59,7 +59,7 @@ class SettingViewController: UIViewController {
     
     let likeMoviewLabel: UILabel = {
         let label = UILabel()
-        label.text = "0개의 무비박스 보관중"
+        label.text = "\(UserDefaultsManager.shared.likedMovies.count)개의 무비박스 보관중"
         label.textColor = .white
         label.backgroundColor = .CustomBlue
         label.textAlignment = .center
@@ -93,6 +93,12 @@ class SettingViewController: UIViewController {
         configureLayout()
         
         tableView.backgroundColor = .black
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        likeMoviewLabel.text = "\(UserDefaultsManager.shared.likedMovies.count)개의 무비박스 보관중"
     }
     
     func configureHierarchy() {

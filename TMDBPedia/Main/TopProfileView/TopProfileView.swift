@@ -8,31 +8,32 @@
 import UIKit
 import SnapKit
 
-class TopProfileViewController: BaseView {
+final class TopProfileView: BaseView {
     
     lazy var profileButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .gray
         button.layer.cornerRadius = 10
         button.clipsToBounds = true
+        button.isUserInteractionEnabled = true
         
         return button
     }()
     
     lazy var profileImage: UIImageView = {
         let image = UIImageView()
-        image.layer.borderWidth = 2
+        image.layer.borderWidth = 3
         image.layer.borderColor = UIColor.CustomBlue?.cgColor
-        image.image = UIImage(named: "profile_0")
+        image.image = UIImage(named: UserDefaultsManager.shared.userProfileImage)
         image.layer.cornerRadius = 25
         image.clipsToBounds = true
         
         return image
     }()
     
-    private let profileNickname: UILabel = {
+    let profileNickname: UILabel = {
         let label = UILabel()
-        label.text = "달콤한 기모청바지"
+        label.text = UserDefaultsManager.shared.userNickName
         label.textColor = .white
         label.font = .systemFont(ofSize: 16, weight: .bold)
         
@@ -42,7 +43,7 @@ class TopProfileViewController: BaseView {
     
     private let registrationDate: UILabel = {
         let label = UILabel()
-        label.text = "25.01.24 가입"
+        label.text = UserDefaultsManager.shared.userDate
         label.textColor = .lightGray
         label.font = .systemFont(ofSize: 12, weight: .semibold)
         
@@ -59,7 +60,7 @@ class TopProfileViewController: BaseView {
     
     let likeMoviewLabel: UILabel = {
         let label = UILabel()
-        label.text = "0개의 무비박스 보관중"
+        label.text = "\(UserDefaultsManager.shared.likedMovies.count)개의 무비박스 보관중"
         label.textColor = .white
         label.backgroundColor = .CustomBlue
         label.textAlignment = .center
@@ -70,10 +71,12 @@ class TopProfileViewController: BaseView {
         return label
     }()
     
+    
     override func configureHierarchy() {
         addSubview(profileButton)
         [profileImage, profileNickname, registrationDate, rightButtonImage, likeMoviewLabel].forEach {
             profileButton.addSubview($0)
+            $0.isUserInteractionEnabled = false
         }
     }
     
@@ -112,9 +115,12 @@ class TopProfileViewController: BaseView {
     }
     
     override func configureView() {
-        
+//        profileButton.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
     }
-
- 
+    
+//    @objc
+//    func profileButtonTapped() {
+//        print(#function)
+//    }
 
 }
