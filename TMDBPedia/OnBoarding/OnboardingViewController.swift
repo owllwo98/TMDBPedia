@@ -28,6 +28,7 @@ final class OnboardingViewController: UIViewController {
     @objc 
     func startButtonTapped() {
         let vc = ProfileNicknameViewController()
+        UserDefaultsManager.shared.userProfileImage = "profile_\(Int.random(in: 0...11))"
         navigationController?.pushViewController(vc, animated: true)
     }
 

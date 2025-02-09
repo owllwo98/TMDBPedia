@@ -42,11 +42,6 @@ class ProfileNicknameViewController: UIViewController {
         profileNicknameDetailView.profileButton.setImage(UIImage(named: UserDefaultsManager.shared.userProfileImage), for: .normal)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        UserDefaultsManager.shared.userProfileImage = "profile_\(Int.random(in: 0...11))"
-    }
-    
     override func viewDidLayoutSubviews() {
         profileNicknameDetailView.profileButton.layer.cornerRadius = profileNicknameDetailView.profileButton.frame.width / 2
     }

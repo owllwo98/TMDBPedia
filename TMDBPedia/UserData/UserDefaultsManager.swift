@@ -39,6 +39,15 @@ class UserDefaultsManager {
         }
     }
     
+//    var userProfileImage1: Int {
+//        get {
+//            UserDefaults.standard.integer(forKey: "userProfileImage1")
+//        }
+//        set {
+//            UserDefaults.standard.set(newValue, forKey: "userProfileImage1")
+//        }
+//    }
+    
     var userDate: String {
         get {
             UserDefaults.standard.string(forKey: "userDate") ?? ""
