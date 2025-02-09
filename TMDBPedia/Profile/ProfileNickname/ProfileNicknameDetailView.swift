@@ -65,7 +65,18 @@ final class ProfileNicknameDetailView : BaseView {
         return button
     }()
     
-    lazy var stackView = createRadioButton(firstText: "E", secondText: "I")
+    let energyViewModel = ProfileNicknameViewModel()
+    let mindViewModel = ProfileNicknameViewModel()
+    let natureViewModel = ProfileNicknameViewModel()
+    let tacticsViewModel = ProfileNicknameViewModel()
+    
+//    let viewModel = ProfileNicknameViewModel()
+    
+    lazy var energyStackView = createRadioButton(groupTag: 1, firstText: "E", secondText: "I", viewModel: energyViewModel)
+    lazy var mindStackView = createRadioButton(groupTag: 2, firstText: "S", secondText: "N", viewModel: mindViewModel)
+    lazy var natureStackView = createRadioButton(groupTag: 3, firstText: "T", secondText: "F", viewModel: natureViewModel)
+    lazy var tacticsStackView = createRadioButton(groupTag: 4, firstText: "J", secondText: "P", viewModel: tacticsViewModel)
+    
     
     override func configureHierarchy() {
         [profileButton, nicknameTextField, underLine, statusLabel, MbtiLabel, completionButton].forEach {
@@ -77,7 +88,6 @@ final class ProfileNicknameDetailView : BaseView {
         backgroundColor = .black
         
         underLine.backgroundColor = .white
-        
     }
     
     override func configureLayout() {
@@ -108,19 +118,35 @@ final class ProfileNicknameDetailView : BaseView {
             make.leading.equalToSuperview().inset(8)
         }
         
-        stackView.snp.makeConstraints { make in
+        energyStackView.snp.makeConstraints { make in
             make.top.equalTo(statusLabel.snp.bottom).inset(-16)
-            make.leading.equalTo(MbtiLabel.snp.trailing).inset(-16)
+            make.trailing.equalTo(mindStackView.snp.leading).inset(-12)
+        }
+        
+        mindStackView.snp.makeConstraints { make in
+            make.top.equalTo(statusLabel.snp.bottom).inset(-16)
+            make.trailing.equalTo(natureStackView.snp.leading).inset(-12)
+        }
+        
+        natureStackView.snp.makeConstraints { make in
+            make.top.equalTo(statusLabel.snp.bottom).inset(-16)
+            make.trailing.equalTo(tacticsStackView.snp.leading).inset(-12)
+        }
+        
+        tacticsStackView.snp.makeConstraints { make in
+            make.top.equalTo(statusLabel.snp.bottom).inset(-16)
+            make.trailing.equalToSuperview().inset(12)
         }
         
         completionButton.snp.makeConstraints { make in
-            make.top.equalTo(stackView.snp.bottom).inset(-16)
+            make.bottom.equalTo(safeAreaLayoutGuide).inset(24)
             make.horizontalEdges.equalToSuperview().inset(8)
         }
         
     }
     
-    func createRadioButton(firstText: String, secondText: String) -> UIStackView {
+    func createRadioButton(groupTag: Int, firstText: String, secondText: String, viewModel: ProfileNicknameViewModel) -> UIStackView {
+        
         lazy var firstButton: UIButton = {
             let button = UIButton()
             button.setTitle(firstText, for: .normal)
@@ -129,6 +155,7 @@ final class ProfileNicknameDetailView : BaseView {
             button.layer.borderColor = UIColor.customGray100.cgColor
             button.layer.borderWidth = 1
             button.clipsToBounds = true
+            button.tag = 0
             
             return button
         }()
@@ -141,6 +168,7 @@ final class ProfileNicknameDetailView : BaseView {
             button.layer.borderColor = UIColor.customGray100.cgColor
             button.layer.borderWidth = 1
             button.clipsToBounds = true
+            button.tag = 1
             
             return button
         }()
@@ -148,19 +176,37 @@ final class ProfileNicknameDetailView : BaseView {
         let stack : UIStackView = {
             let stack = UIStackView(arrangedSubviews: [firstButton, secondButton])
             stack.axis = .vertical
-            stack.spacing = 4
+            stack.spacing = 12
             
             return stack
         }()
         
         addSubview(stack)
-                
+        
         firstButton.snp.makeConstraints { make in
             make.size.equalTo(40)
         }
         
         secondButton.snp.makeConstraints { make in
             make.size.equalTo(40)
+        }
+        
+        firstButton.addAction(UIAction { _ in
+            viewModel.inputButton.value = [groupTag : firstButton.tag]
+        }, for: .touchUpInside)
+        
+        secondButton.addAction(UIAction { _ in
+            viewModel.inputButton.value = [groupTag : secondButton.tag]
+        }, for: .touchUpInside)
+        
+        viewModel.outputButton.lazyBind { selectedButtons in
+            let selectedTag = selectedButtons[groupTag]
+            
+            firstButton.backgroundColor = (selectedTag == firstButton.tag) ? .customBlue100 : .clear
+            firstButton.layer.borderColor = (selectedTag == firstButton.tag) ? UIColor.customBlue100.cgColor : UIColor.customGray100.cgColor
+            
+            secondButton.backgroundColor = (selectedTag == secondButton.tag) ? .customBlue100 : .clear
+            secondButton.layer.borderColor = (selectedTag == secondButton.tag) ? UIColor.customBlue100.cgColor : UIColor.customGray100.cgColor
         }
         
         return stack

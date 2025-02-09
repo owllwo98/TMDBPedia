@@ -13,6 +13,9 @@ class ProfileNicknameViewController: UIViewController {
     
     let viewModel = ProfileNicknameViewModel()
     
+    var isNicknameAble = false
+    var isMbtiAble = false
+    
     override func loadView() {
         self.view = profileNicknameDetailView
     }
@@ -53,10 +56,24 @@ class ProfileNicknameViewController: UIViewController {
             self.profileNicknameDetailView.statusLabel.text = text
         }
         
-        viewModel.outputButtonTrigger.bind { value in
-            self.profileNicknameDetailView.statusLabel.textColor = value ? .customBlue : .red
-            self.profileNicknameDetailView.completionButton.backgroundColor = value ? .customBlue : .customGray100
-            self.profileNicknameDetailView.completionButton.isEnabled = value
+        viewModel.outputNickNameEnabled.bind { value in
+            self.profileNicknameDetailView.statusLabel.textColor = value ? UIColor.customBlue100 : .red
+            self.isNicknameAble = value
+            
+            self.profileNicknameDetailView.completionButton.backgroundColor = self.isNicknameAble && self.isMbtiAble ? UIColor.customBlue100 : .customGray100
+            self.profileNicknameDetailView.completionButton.isEnabled = self.isNicknameAble && self.isMbtiAble
+    
+        }
+        
+        let mbtiViewModels = [self.profileNicknameDetailView.energyViewModel, self.profileNicknameDetailView.mindViewModel, self.profileNicknameDetailView.natureViewModel, self.profileNicknameDetailView.tacticsViewModel]
+        
+        mbtiViewModels.forEach { viewModel in
+            viewModel.outputMbtiEnabled.bind { _ in
+                self.isMbtiAble = mbtiViewModels.allSatisfy { $0.outputMbtiEnabled.value == true }
+                
+                self.profileNicknameDetailView.completionButton.backgroundColor = self.isNicknameAble && self.isMbtiAble ? UIColor.customBlue100 : .customGray100
+                self.profileNicknameDetailView.completionButton.isEnabled = self.isNicknameAble && self.isMbtiAble
+            }
         }
     }
     

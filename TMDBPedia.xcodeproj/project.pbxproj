@@ -57,6 +57,7 @@
 		5EDC4AFF2D5762FF00B70603 /* ProfileNicknameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDC4AFE2D5762FF00B70603 /* ProfileNicknameViewModel.swift */; };
 		5EDC4B012D57634700B70603 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDC4B002D57634700B70603 /* Observable.swift */; };
 		5EDC4B032D57699C00B70603 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDC4B022D57699C00B70603 /* UITextField+.swift */; };
+		5EDC4B052D58B3EC00B70603 /* ProfileImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDC4B042D58B3EC00B70603 /* ProfileImageViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -109,6 +110,7 @@
 		5EDC4AFE2D5762FF00B70603 /* ProfileNicknameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileNicknameViewModel.swift; sourceTree = "<group>"; };
 		5EDC4B002D57634700B70603 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		5EDC4B022D57699C00B70603 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		5EDC4B042D58B3EC00B70603 /* ProfileImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -328,6 +330,7 @@
 				5E9FFCE32D44F7D900724CF5 /* ProfileImageViewController.swift */,
 				5E9FFCE92D45216800724CF5 /* ProfileImageDetailView.swift */,
 				5E9FFCEB2D45269900724CF5 /* ProfileImageCollectionViewCell.swift */,
+				5EDC4B042D58B3EC00B70603 /* ProfileImageViewModel.swift */,
 			);
 			path = ProfileImage;
 			sourceTree = "<group>";
@@ -468,6 +471,7 @@
 				5EB2DF562D4D759A00361E08 /* RecentSearchCollectionViewCell.swift in Sources */,
 				5EB2DF542D4CD55700361E08 /* UIViewController+.swift in Sources */,
 				5E9FFCB52D43431F00724CF5 /* AppDelegate.swift in Sources */,
+				5EDC4B052D58B3EC00B70603 /* ProfileImageViewModel.swift in Sources */,
 				5E9FFCD62D44D6FB00724CF5 /* OnboardingViewController.swift in Sources */,
 				5E9FFCD92D44D76500724CF5 /* BaseView.swift in Sources */,
 				5E9FFCEC2D45269900724CF5 /* ProfileImageCollectionViewCell.swift in Sources */,

@@ -11,6 +11,7 @@ extension UIColor {
     class var CustomBlue: UIColor? { return UIColor(named: "CustomBlue") }
     static let customGray100: UIColor = UIColor(hexCode: "8C8C8C")
     static let customGray200: UIColor = UIColor(hexCode: "9b9b9b")
+    static let customBlue100: UIColor = UIColor(hexCode: "186FF2")
     
     convenience init(hexCode: String, alpha: CGFloat = 1.0) {
         var hexFormatted: String = hexCode.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).uppercased()
