@@ -7,25 +7,40 @@
 
 import UIKit
 
-class ProfileImageViewModel {
-    let inputData: Observable<[UICollectionView? : IndexPath?]> = Observable([nil : nil])
+class ProfileImageViewModel: BaseViewModel {
     
-    let inputIndexPath: Observable<String> = Observable(UserDefaultsManager.shared.userProfileImage)
+    private(set) var input: Input
+    private(set) var output: Output
     
-    let inputImage: Observable<String?> = Observable(nil)
+    struct Input {
+        let Data: Observable<[UICollectionView? : IndexPath?]> = Observable([nil : nil])
+        
+        let IndexPath: Observable<String> = Observable(UserDefaultsManager.shared.userProfileImage)
+        
+        let Image: Observable<String?> = Observable(nil)
+    }
     
-    let outputIndexPath:  Observable<[UICollectionView? : IndexPath?]> = Observable([nil : nil])
+    struct Output {
+        let IndexPath:  Observable<[UICollectionView? : IndexPath?]> = Observable([nil : nil])
+        
+        let Image: Observable<Void?> = Observable(nil)
+    }
     
-    let outputImage: Observable<Void?> = Observable(nil)
-   
     var selectedIndex: IndexPath?
     
     init() {
-        inputData.bind { value in
+        input = Input()
+        output = Output()
+       
+        transform()
+    }
+    
+    func transform() {
+        input.Data.bind { value in
             self.radioCell(value: value)
         }
         
-        inputImage.bind { value in
+        input.Image.bind { value in
             self.setCell()
         }
     }
@@ -33,11 +48,11 @@ class ProfileImageViewModel {
     private func radioCell(value: [UICollectionView? : IndexPath?]) {
         for (collectionView, newIndexPath) in value {
             if let previousIndexPath = self.selectedIndex {
-                self.outputIndexPath.value = [collectionView : previousIndexPath]
+                self.output.IndexPath.value = [collectionView : previousIndexPath]
             }
       
             if let newIndexPath = newIndexPath {
-                self.outputIndexPath.value = [collectionView : newIndexPath]
+                self.output.IndexPath.value = [collectionView : newIndexPath]
             }
 
             self.selectedIndex = newIndexPath
@@ -45,8 +60,8 @@ class ProfileImageViewModel {
     }
     
     private func setCell() {
-        if inputImage.value == UserDefaultsManager.shared.userProfileImage {
-            outputImage.value = ()
+        if input.Image.value == UserDefaultsManager.shared.userProfileImage {
+            output.Image.value = ()
         }
     }
     

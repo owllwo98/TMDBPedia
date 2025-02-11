@@ -13,14 +13,13 @@ protocol searchDelegate {
 }
 
 final class MainViewController: UIViewController {
-
+    
     private let topProfileView = TopProfileView()
     private let recentSearchView = RecentSearchView()
     private let todaysMovieView = TodaysMovieView()
     
-    private var movieList: Movie?
-    
-    var searchList: [String] = []
+    let recentSearchViewModel = RecentSearchViewModel()
+    let todaysMovieViewModel = TodaysMovieViewModel()
     
     override func loadView() {
         self.view = UIView()
@@ -28,8 +27,6 @@ final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        requestData()
         
         self.navigationItem.title = "오늘의 영화"
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(rightBarButtonItemTapped))
@@ -41,10 +38,12 @@ final class MainViewController: UIViewController {
         
         configureHierarchy()
         configureLayout()
-
+        
         
         topProfileView.profileButton.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
         recentSearchView.deleteButton.addTarget(self, action: #selector(deleteAllButtonTapped), for: .touchUpInside)
+        
+        bindData()
         
     }
     
@@ -52,7 +51,7 @@ final class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if searchList.isEmpty {
+        if recentSearchViewModel.output.searchList.value.isEmpty {
             recentSearchView.emptyLabel.isHidden = false
             recentSearchView.collectionView.isHidden = true
         } else {
@@ -66,32 +65,42 @@ final class MainViewController: UIViewController {
         todaysMovieView.collectionView.reloadData()
     }
     
-    // MARK: 뭔가 계속 중복되는 코드여서 프로토콜을 통해 줄일 수 있지 않을까 생각했는데 마무리 짓지는 못했습니다.
-    @objc
-    func likeButtonTapped(_ sender: UIButton) {
-        let movieId = movieList?.results[sender.tag].id ?? 0
-        var likedMovies = UserDefaultsManager.shared.likedMovies
-        
-        if let currentLikeStatus = likedMovies[String(movieId)] {
-            if currentLikeStatus {
-                likedMovies[String(movieId)] = nil
+    func bindData() {
+        recentSearchViewModel.output.searchList.bind { [weak self] value in
+            guard let self = self else { return }
+            
+            if recentSearchViewModel.output.searchList.value.isEmpty {
+                recentSearchView.emptyLabel.isHidden = false
+                recentSearchView.collectionView.isHidden = true
             } else {
-                likedMovies[String(movieId)] = true
+                recentSearchView.emptyLabel.isHidden = true
+                recentSearchView.collectionView.isHidden = false
             }
-        } else {
-            likedMovies[String(movieId)] = true
+            
+            recentSearchView.collectionView.reloadData()
         }
         
-        UserDefaultsManager.shared.likedMovies = likedMovies
+        todaysMovieViewModel.output.movieData.bind { [weak self] value in
+            guard let self = self else { return }
+            todaysMovieView.collectionView.reloadData()
+        }
         
-        topProfileView.likeMoviewLabel.text = "\(UserDefaultsManager.shared.likedMovies.count)개의 무비박스 보관중"
-        todaysMovieView.collectionView.reloadData()
+        todaysMovieViewModel.output.likeButton.bind { [weak self] _ in
+            guard let self = self else { return }
+            topProfileView.likeMoviewLabel.text = "\(UserDefaultsManager.shared.likedMovies.count)개의 무비박스 보관중"
+            todaysMovieView.collectionView.reloadData()
+        }
+        
+    }
+    
+    @objc
+    func likeButtonTapped(_ sender: UIButton) {
+        todaysMovieViewModel.input.likeButton.value = sender.tag
     }
     
     @objc
     func deleteButtonTapped(_ sender: UIButton) {
-        searchList.remove(at: sender.tag)
-        recentSearchView.collectionView.reloadData()
+        recentSearchViewModel.input.searchListTag.value = sender.tag
     }
     
     @objc
@@ -103,7 +112,6 @@ final class MainViewController: UIViewController {
     
     @objc
     func profileButtonTapped() {
-        print(#function)
         let vc = ProfileNicknameViewController()
         let navVC = UINavigationController(rootViewController: vc)
         
@@ -112,11 +120,7 @@ final class MainViewController: UIViewController {
     
     @objc
     func deleteAllButtonTapped() {
-        searchList.removeAll()
-        
-        recentSearchView.emptyLabel.isHidden = false
-        recentSearchView.collectionView.isHidden = true
-        recentSearchView.collectionView.reloadData()
+        recentSearchViewModel.input.removeAll.value = ()
     }
     
     func configureHierarchy() {
@@ -168,7 +172,7 @@ final class MainViewController: UIViewController {
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == recentSearchView.collectionView {
-            return searchList.count
+            return recentSearchViewModel.output.searchList.value.count
         } else {
             return 20
         }
@@ -178,15 +182,15 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         if collectionView == recentSearchView.collectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentSearchCollectionViewCell.id, for: indexPath) as! RecentSearchCollectionViewCell
-            cell.configureData(searchList[indexPath.item])
+            cell.configureData(recentSearchViewModel.output.searchList.value[indexPath.item])
             cell.deleteKeywordButton.tag = indexPath.item
             cell.deleteKeywordButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodaysMovieCollectionViewCell.id, for: indexPath) as! TodaysMovieCollectionViewCell
             cell.backgroundColor = .black
-
-            if let movieList {
+            
+            if let movieList = todaysMovieViewModel.output.movieData.value {
                 cell.configureData(movieList, indexPath.item)
                 cell.likeButton.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
                 cell.likeButton.tag = indexPath.item
@@ -210,20 +214,18 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         print(#function)
         if collectionView == recentSearchView.collectionView {
             let vc = SearchMovieViewController()
-            vc.query = searchList[indexPath.item]
-            vc.searchBar.text = searchList[indexPath.item]
-            vc.requestData()
+            vc.searchMovieViewModel.input.query.value = recentSearchViewModel.output.searchList.value[indexPath.item]
+            vc.searchBar.text = recentSearchViewModel.output.searchList.value[indexPath.item]
             
             navigationController?.pushViewController(vc, animated: true)
             
         }  else if collectionView == todaysMovieView.collectionView {
             let vc = MovieDetailViewController()
-            vc.result = movieList?.results[indexPath.item]
-            
-            vc.movieTitle = movieList?.results[indexPath.item].title
-            vc.id = movieList?.results[indexPath.item].id
-            vc.vote_average = movieList?.results[indexPath.item].vote_average
-            vc.release_date = movieList?.results[indexPath.item].release_date
+            vc.result = todaysMovieViewModel.output.movieData.value?.results[indexPath.item]
+            vc.movieTitle = todaysMovieViewModel.output.movieData.value?.results[indexPath.item].title
+            vc.id = todaysMovieViewModel.output.movieData.value?.results[indexPath.item].id
+            vc.vote_average = todaysMovieViewModel.output.movieData.value?.results[indexPath.item].vote_average
+            vc.release_date = todaysMovieViewModel.output.movieData.value?.results[indexPath.item].release_date
             
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -232,18 +234,9 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
 extension MainViewController: searchDelegate {
     func searchReceived(value: String) {
-        searchList.append(value)
+        recentSearchViewModel.input.searchList.value = value
+        print(#function)
     }
 }
 
-extension MainViewController {
-    func requestData() {
-        NetworkManager.shared.fetchData(api: .getTrending(page: 1), T: Movie.self) { [weak self] value in
-            guard let self = self else { return }
-            movieList = value
-            todaysMovieView.collectionView.reloadData()
-        } errorCompletion: { error in
-            print(error)
-        }
-    }
-}
+

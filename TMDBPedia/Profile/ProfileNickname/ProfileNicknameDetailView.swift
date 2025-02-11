@@ -65,29 +65,40 @@ final class ProfileNicknameDetailView : BaseView {
         return button
     }()
     
-    let energyViewModel = ProfileNicknameViewModel()
-    let mindViewModel = ProfileNicknameViewModel()
-    let natureViewModel = ProfileNicknameViewModel()
-    let tacticsViewModel = ProfileNicknameViewModel()
+    let energyViewModel = ProfileMbtiViewModel()
+    let mindViewModel = ProfileMbtiViewModel()
+    let natureViewModel = ProfileMbtiViewModel()
+    let tacticsViewModel = ProfileMbtiViewModel()
     
 //    let viewModel = ProfileNicknameViewModel()
+    
+    let viewModel = ProfileMbtiViewModel()
     
     lazy var energyStackView = createRadioButton(groupTag: 1, firstText: "E", secondText: "I", viewModel: energyViewModel)
     lazy var mindStackView = createRadioButton(groupTag: 2, firstText: "S", secondText: "N", viewModel: mindViewModel)
     lazy var natureStackView = createRadioButton(groupTag: 3, firstText: "T", secondText: "F", viewModel: natureViewModel)
     lazy var tacticsStackView = createRadioButton(groupTag: 4, firstText: "J", secondText: "P", viewModel: tacticsViewModel)
     
+//    lazy var energyStackView = createRadioButton(groupTag: 0, firstText: "E", secondText: "I", viewModel: viewModel)
+//    lazy var mindStackView = createRadioButton(groupTag: 1, firstText: "S", secondText: "N", viewModel: viewModel)
+//    lazy var natureStackView = createRadioButton(groupTag: 2, firstText: "T", secondText: "F", viewModel: viewModel)
+//    lazy var tacticsStackView = createRadioButton(groupTag: 3, firstText: "J", secondText: "P", viewModel: viewModel)
+//    
+//    lazy var stacks = [energyStackView, mindStackView, natureStackView, tacticsStackView]
+    
     
     override func configureHierarchy() {
         [profileButton, nicknameTextField, underLine, statusLabel, MbtiLabel, completionButton].forEach {
             addSubview($0)
         }
+        
     }
     
     override func configureView() {
         backgroundColor = .black
         
         underLine.backgroundColor = .white
+        
     }
     
     override func configureLayout() {
@@ -145,7 +156,7 @@ final class ProfileNicknameDetailView : BaseView {
         
     }
     
-    func createRadioButton(groupTag: Int, firstText: String, secondText: String, viewModel: ProfileNicknameViewModel) -> UIStackView {
+    func createRadioButton(groupTag: Int, firstText: String, secondText: String, viewModel: ProfileMbtiViewModel) -> UIStackView {
         
         lazy var firstButton: UIButton = {
             let button = UIButton()
@@ -177,6 +188,7 @@ final class ProfileNicknameDetailView : BaseView {
             let stack = UIStackView(arrangedSubviews: [firstButton, secondButton])
             stack.axis = .vertical
             stack.spacing = 12
+            stack.tag = groupTag
             
             return stack
         }()
@@ -192,14 +204,14 @@ final class ProfileNicknameDetailView : BaseView {
         }
         
         firstButton.addAction(UIAction { _ in
-            viewModel.inputButton.value = [groupTag : firstButton.tag]
+            viewModel.input.Button.value = [groupTag : firstButton.tag]
         }, for: .touchUpInside)
         
         secondButton.addAction(UIAction { _ in
-            viewModel.inputButton.value = [groupTag : secondButton.tag]
+            viewModel.input.Button.value = [groupTag : secondButton.tag]
         }, for: .touchUpInside)
         
-        viewModel.outputButton.lazyBind { selectedButtons in
+        viewModel.output.Button.lazyBind { selectedButtons in
             let selectedTag = selectedButtons[groupTag]
             
             firstButton.backgroundColor = (selectedTag == firstButton.tag) ? .customBlue100 : .clear
@@ -207,6 +219,7 @@ final class ProfileNicknameDetailView : BaseView {
             
             secondButton.backgroundColor = (selectedTag == secondButton.tag) ? .customBlue100 : .clear
             secondButton.layer.borderColor = (selectedTag == secondButton.tag) ? UIColor.customBlue100.cgColor : UIColor.customGray100.cgColor
+            
         }
         
         return stack

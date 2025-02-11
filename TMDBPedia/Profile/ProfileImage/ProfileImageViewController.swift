@@ -38,7 +38,7 @@ class ProfileImageViewController: UIViewController {
     }
     
     func bindData() {
-        viewModel.outputIndexPath.bind { value in
+        viewModel.output.IndexPath.bind { value in
             for (collectionView, indexpath) in value {
                 guard let indexpath else {
                     return
@@ -77,7 +77,7 @@ extension ProfileImageViewController: UICollectionViewDelegate, UICollectionView
         let imageName = "profile_\(indexPath.item)"
         cell.itemImageView.image = UIImage(named: imageName)
         
-        viewModel.inputImage.value = imageName
+        viewModel.input.Image.value = imageName
 
         if imageName == UserDefaultsManager.shared.userProfileImage {
             cell.itemImageView.layer.borderColor = UIColor.CustomBlue?.cgColor
@@ -92,7 +92,7 @@ extension ProfileImageViewController: UICollectionViewDelegate, UICollectionView
         UserDefaultsManager.shared.userProfileImage = "profile_\(indexPath.item)"
         profileImageDetailView.selectedProfileButton.setImage(UIImage(named: UserDefaultsManager.shared.userProfileImage), for: .normal)
         
-        viewModel.inputData.value = [collectionView : indexPath]
+        viewModel.input.Data.value = [collectionView : indexPath]
         
     }
 }

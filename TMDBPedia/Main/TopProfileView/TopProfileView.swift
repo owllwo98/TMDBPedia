@@ -115,12 +115,7 @@ final class TopProfileView: BaseView {
     }
     
     override func configureView() {
-//        profileButton.addTarget(self, action: #selector(profileButtonTapped), for: .touchUpInside)
+        
     }
-    
-//    @objc
-//    func profileButtonTapped() {
-//        print(#function)
-//    }
 
 }

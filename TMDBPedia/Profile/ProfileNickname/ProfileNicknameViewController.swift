@@ -8,10 +8,11 @@
 import UIKit
 
 class ProfileNicknameViewController: UIViewController {
-
+    
     private var profileNicknameDetailView = ProfileNicknameDetailView()
     
     let viewModel = ProfileNicknameViewModel()
+    lazy var mbtiViewModel = self.profileNicknameDetailView.viewModel
     
     var isNicknameAble = false
     var isMbtiAble = false
@@ -22,7 +23,7 @@ class ProfileNicknameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.navigationItem.title = "프로필 설정"
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: ""), style: .plain, target: self, action: nil)
@@ -34,7 +35,11 @@ class ProfileNicknameViewController: UIViewController {
         profileNicknameDetailView.nicknameTextField.addTarget(self, action: #selector(textFieldDidChanged), for: .editingChanged)
         
         bindData()
-      
+        
+        let tap = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -47,26 +52,44 @@ class ProfileNicknameViewController: UIViewController {
     }
     
     func bindData() {
-        viewModel.outputText.bind { text in
+        viewModel.output.Text.bind { text in
             self.profileNicknameDetailView.statusLabel.text = text
         }
         
-        viewModel.outputNickNameEnabled.bind { value in
+        viewModel.output.NickNameEnabled.bind { value in
             self.profileNicknameDetailView.statusLabel.textColor = value ? UIColor.customBlue100 : .red
             self.isNicknameAble = value
             
             self.profileNicknameDetailView.completionButton.backgroundColor = self.isNicknameAble && self.isMbtiAble ? UIColor.customBlue100 : .customGray100
             self.profileNicknameDetailView.completionButton.isEnabled = self.isNicknameAble && self.isMbtiAble
-    
+            
         }
+        
+//        mbtiViewModel.output.Button.lazyBind { selectedButtons in
+//            print(selectedButtons)
+//            let mbtiStack = self.profileNicknameDetailView.stacks
+//            
+//            for (groupTag, buttonTag) in selectedButtons {
+//                let selectedTag = selectedButtons[groupTag]
+//                
+//                
+//                mbtiStack[groupTag].arrangedSubviews.first?.backgroundColor = (buttonTag == mbtiStack[groupTag].arrangedSubviews.first?.tag) ? .customBlue100 : .clear
+//                
+//                mbtiStack[groupTag].arrangedSubviews.last?.backgroundColor = (buttonTag == mbtiStack[groupTag].arrangedSubviews.last?.tag) ? .customBlue100 : .clear
+//                p
+//                
+//            }
+//            
+//        }
         
         let mbtiViewModels = [self.profileNicknameDetailView.energyViewModel, self.profileNicknameDetailView.mindViewModel, self.profileNicknameDetailView.natureViewModel, self.profileNicknameDetailView.tacticsViewModel]
         
         mbtiViewModels.forEach { viewModel in
-            viewModel.outputMbtiEnabled.bind { _ in
-                self.isMbtiAble = mbtiViewModels.allSatisfy { $0.outputMbtiEnabled.value == true }
+            viewModel.output.MbtiEnabled.bind { _ in
+                self.isMbtiAble = mbtiViewModels.allSatisfy { $0.output.MbtiEnabled.value == true }
                 
                 self.profileNicknameDetailView.completionButton.backgroundColor = self.isNicknameAble && self.isMbtiAble ? UIColor.customBlue100 : .customGray100
+                
                 self.profileNicknameDetailView.completionButton.isEnabled = self.isNicknameAble && self.isMbtiAble
             }
         }
@@ -84,7 +107,7 @@ class ProfileNicknameViewController: UIViewController {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first else { return }
         
-        let tabBarVC = TabBarViewController() 
+        let tabBarVC = TabBarViewController()
         window.rootViewController = tabBarVC
         window.makeKeyAndVisible()
     }
@@ -99,7 +122,7 @@ class ProfileNicknameViewController: UIViewController {
     
     @objc
     func textFieldDidChanged() {
-        viewModel.inputText.value = profileNicknameDetailView.nicknameTextField.text
+        viewModel.input.Text.value = profileNicknameDetailView.nicknameTextField.text
     }
 }
 

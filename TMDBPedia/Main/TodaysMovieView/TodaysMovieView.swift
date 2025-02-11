@@ -23,7 +23,6 @@ final class TodaysMovieView: BaseView {
         layout.minimumLineSpacing = 8
         layout.minimumInteritemSpacing = 4
         layout.scrollDirection = .horizontal
-//        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 2 - 2, height: UIScreen.main.bounds.height / 3)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .black

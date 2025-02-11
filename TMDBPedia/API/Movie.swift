@@ -29,14 +29,3 @@ struct Result: Decodable {
 }
 
 
-   
-            
-          
-            
-          
-          
-        
-       
-
-         
-   

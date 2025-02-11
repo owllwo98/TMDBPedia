@@ -129,6 +129,8 @@ final class MovieDetailViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: ""), style: .plain, target: self, action: nil)
         navigationController?.navigationBar.tintColor = .CustomBlue
         
+        moreButton.addTarget(self, action: #selector(moreButtonTapped), for: .touchUpInside)
+        
         configureHierarchy()
         configureLayout()
     }
@@ -155,6 +157,11 @@ final class MovieDetailViewController: UIViewController {
         
         UserDefaultsManager.shared.likedMovies = likedMovies
         updateLikeButton()
+    }
+    
+    @objc
+    func moreButtonTapped() {
+        Synopsis.numberOfLines = 5
     }
     
     func configureHierarchy() {
