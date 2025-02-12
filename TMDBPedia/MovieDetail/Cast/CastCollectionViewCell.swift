@@ -61,7 +61,12 @@ class CastCollectionViewCell: BaseCollectionViewCell {
         }
     }
     
-    func configureData(_ cast: castDetail) {
+    func configureData(_ cast: castDetail?) {
+        
+        guard let cast else {
+            return
+        }
+        
         let castURL = URL(string: "https://image.tmdb.org/t/p/w500\(cast.profile_path ?? "star")")
         castImage.kf.setImage(with: castURL)
         

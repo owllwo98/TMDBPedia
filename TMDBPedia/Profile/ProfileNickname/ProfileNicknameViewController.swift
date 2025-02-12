@@ -76,7 +76,7 @@ class ProfileNicknameViewController: UIViewController {
 //                mbtiStack[groupTag].arrangedSubviews.first?.backgroundColor = (buttonTag == mbtiStack[groupTag].arrangedSubviews.first?.tag) ? .customBlue100 : .clear
 //                
 //                mbtiStack[groupTag].arrangedSubviews.last?.backgroundColor = (buttonTag == mbtiStack[groupTag].arrangedSubviews.last?.tag) ? .customBlue100 : .clear
-//                p
+//
 //                
 //            }
 //            
@@ -100,6 +100,7 @@ class ProfileNicknameViewController: UIViewController {
         guard let nickname = profileNicknameDetailView.nicknameTextField.text else {
             return
         }
+        
         UserDefaultsManager.shared.isStart = true
         UserDefaultsManager.shared.userNickName = nickname
         UserDefaultsManager.shared.userDate = Date().toDateDayString()

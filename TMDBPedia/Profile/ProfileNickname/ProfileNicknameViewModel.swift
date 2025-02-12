@@ -22,7 +22,7 @@ class ProfileNicknameViewModel: BaseViewModel {
     }
     
     var specialKeywords: [String] = ["@", "#", "$", "%"]
-    var numberKeywords: [String] = ["1", "2", "3", "4", "5", "6", "7", "8", "9",]
+    var numberKeywords: [String] = ["0" ,"1", "2", "3", "4", "5", "6", "7", "8", "9",]
     
     init() {
         input = Input()

@@ -165,7 +165,7 @@ final class MainViewController: UIViewController {
     }
     
     func configureView() {
-        
+        print(recentSearchViewModel.output.searchList.value)
     }
 }
 
@@ -211,21 +211,19 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(#function)
         if collectionView == recentSearchView.collectionView {
             let vc = SearchMovieViewController()
             vc.searchMovieViewModel.input.query.value = recentSearchViewModel.output.searchList.value[indexPath.item]
             vc.searchBar.text = recentSearchViewModel.output.searchList.value[indexPath.item]
+            vc.contents = self
             
             navigationController?.pushViewController(vc, animated: true)
             
         }  else if collectionView == todaysMovieView.collectionView {
             let vc = MovieDetailViewController()
-            vc.result = todaysMovieViewModel.output.movieData.value?.results[indexPath.item]
-            vc.movieTitle = todaysMovieViewModel.output.movieData.value?.results[indexPath.item].title
-            vc.id = todaysMovieViewModel.output.movieData.value?.results[indexPath.item].id
-            vc.vote_average = todaysMovieViewModel.output.movieData.value?.results[indexPath.item].vote_average
-            vc.release_date = todaysMovieViewModel.output.movieData.value?.results[indexPath.item].release_date
+            vc.movieDetailViewModel.input.result.value = todaysMovieViewModel.output.movieData.value?.results[indexPath.item]
+            
+            vc.movieDetailViewModel.input.movieData.value = todaysMovieViewModel.output.movieData.value
             
             navigationController?.pushViewController(vc, animated: true)
         }

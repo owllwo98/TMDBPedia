@@ -11,28 +11,19 @@ import SnapKit
 
 final class MovieDetailViewController: UIViewController {
     
-    var result: Result?
-    
-    var movieTitle: String?
-    var id: Int?
-    var release_date: String?
-    var vote_average: Double?
-    
-    var image: Image?
-    var backDropList: [BackdropDetail] = []
-    var posterList: [PosterDetail]?
-    var cast: Credit?
+    let movieDetailViewModel = MovieDetailViewModel()
+
     
     lazy var releaseDate: UILabel = {
         let label = UILabel()
-        UILabel.addImageLabel(label, result?.release_date ?? "", "calendar")
+        UILabel.addImageLabel(label, movieDetailViewModel.output.result.value?.release_date ?? "", "calendar")
 
         return label
     }()
     
     lazy var voteaverage: UILabel = {
         let label = UILabel()
-        UILabel.addImageLabel(label, result?.vote_average.formatted() ?? "", "star.fill")
+        UILabel.addImageLabel(label, movieDetailViewModel.output.result.value?.vote_average.formatted() ?? "", "star.fill")
         
         return label
     }()
@@ -40,16 +31,16 @@ final class MovieDetailViewController: UIViewController {
     private lazy var genreLabel: UILabel = {
         let label = UILabel()
         
-        if result?.genre_ids.count ?? 0 == 0 {
+        if movieDetailViewModel.output.result.value?.genre_ids.count ?? 0 == 0 {
             UILabel.addImageLabel(label, "", "film.fill")
             return label
-        } else if result?.genre_ids.count ?? 0 == 1 {
-            let genre1 = Genre(rawValue: result?.genre_ids[0] ?? 0)?.name
+        } else if movieDetailViewModel.output.result.value?.genre_ids.count ?? 0 == 1 {
+            let genre1 = Genre(rawValue: movieDetailViewModel.output.result.value?.genre_ids[0] ?? 0)?.name
             UILabel.addImageLabel(label, (genre1 ?? ""), "film.fill")
             return label
         } else {
-            let genre1 = Genre(rawValue: result?.genre_ids[0] ?? 0)?.name
-            let genre2 = Genre(rawValue: result?.genre_ids[1] ?? 0)?.name
+            let genre1 = Genre(rawValue: movieDetailViewModel.output.result.value?.genre_ids[0] ?? 0)?.name
+            let genre2 = Genre(rawValue: movieDetailViewModel.output.result.value?.genre_ids[1] ?? 0)?.name
     
             UILabel.addImageLabel(label, (genre1 ?? "") + "," + (genre2 ?? ""), "film.fill")
             return label
@@ -96,7 +87,6 @@ final class MovieDetailViewController: UIViewController {
         label.numberOfLines = 3
         label.textColor = .white
         label.font = .systemFont(ofSize: 12, weight: .bold)
-        label.text = result?.overview
         
         return label
     }()
@@ -120,10 +110,6 @@ final class MovieDetailViewController: UIViewController {
         
         view.backgroundColor = .black
         
-        requestData()
-        
-        self.navigationItem.title = result?.title
-        updateLikeButton()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: ""), style: .plain, target: self, action: #selector(likeButtonTapped))
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         navigationItem.backBarButtonItem = UIBarButtonItem(image: UIImage(systemName: ""), style: .plain, target: self, action: nil)
@@ -133,6 +119,8 @@ final class MovieDetailViewController: UIViewController {
         
         configureHierarchy()
         configureLayout()
+        
+        bindData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -140,22 +128,27 @@ final class MovieDetailViewController: UIViewController {
         updateLikeButton()
     }
     
-    @objc
-    func likeButtonTapped(_ sender: UIButton) {
-        let movieId = result?.id ?? 0
-        var likedMovies = UserDefaultsManager.shared.likedMovies
-        
-        if let currentLikeStatus = likedMovies[String(movieId)] {
-            if currentLikeStatus {
-                likedMovies[String(movieId)] = nil
-            } else {
-                likedMovies[String(movieId)] = true
-            }
-        } else {
-            likedMovies[String(movieId)] = true
+    func bindData() {
+        movieDetailViewModel.output.result.bind { [weak self] value in
+            guard let self = self else { return }
+            Synopsis.text = value?.overview
+            navigationItem.title = value?.title
+            
         }
         
-        UserDefaultsManager.shared.likedMovies = likedMovies
+        
+        movieDetailViewModel.output.movieImageData.bind { [weak self] value in
+            guard let self = self else { return }
+    
+            backDropCollectionView.reloadData()
+            posterCollectionView.reloadData()
+            castCollectionView.reloadData()
+        }
+    }
+    
+    @objc
+    func likeButtonTapped(_ sender: UIButton) {
+        movieDetailViewModel.input.likeButton.value = sender.tag
         updateLikeButton()
     }
     
@@ -260,31 +253,33 @@ final class MovieDetailViewController: UIViewController {
 
 extension MovieDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         if collectionView == backDropCollectionView {
-            return min(backDropList.count, 5)
+            return min(movieDetailViewModel.output.movieImageData.value?.backdrops.count ?? 0, 5)
         } else if collectionView == castCollectionView {
-            return cast?.cast.count ?? 0
+            return movieDetailViewModel.output.creditData.value?.cast.count ?? 0
         } else {
-            return posterList?.count ?? 0
+            return movieDetailViewModel.output.movieImageData.value?.posters.count ?? 0
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         if collectionView == backDropCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BackdropCollectionViewCell.id, for: indexPath) as! BackdropCollectionViewCell
-            cell.configureData(backDropList[indexPath.item])
+            cell.configureData(movieDetailViewModel.output.movieImageData.value?.backdrops[indexPath.item])
             return cell
         } else if collectionView == castCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CastCollectionViewCell.id, for: indexPath) as! CastCollectionViewCell
-            if let cast {
-                cell.configureData(cast.cast[indexPath.item])
+            if let cast = movieDetailViewModel.output.creditData.value?.cast {
+                cell.configureData(cast[indexPath.item])
             } else{
                 
             }
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCollectionViewCell.id, for: indexPath) as! PosterCollectionViewCell
-            if let posterList {
+            if let posterList = movieDetailViewModel.output.movieImageData.value?.posters {
                 cell.configureData(posterList[indexPath.item])
             } else{
                 
@@ -294,30 +289,6 @@ extension MovieDetailViewController: UICollectionViewDelegate, UICollectionViewD
     }
 }
 
-extension MovieDetailViewController {
-    func requestData() {
-        NetworkManager.shared.fetchData(api: .getMovieImages(movieId: result?.id ?? 12345), T: Image.self) { [weak self] value in
-            guard let self = self else { return }
-            image = value
-            backDropList = value.backdrops
-            posterList = value.posters
-            
-            backDropCollectionView.reloadData()
-            posterCollectionView.reloadData()
-        } errorCompletion: { error in
-            print(error)
-        }
-        
-        NetworkManager.shared.fetchData(api: .getMovieCredits(movieId: result?.id ?? 12345), T: Credit.self) { [weak self] value in
-            guard let self = self else { return }
-            cast = value
-            
-            castCollectionView.reloadData()
-        } errorCompletion: { error in
-            print(error)
-        }
-    }
-}
 
 extension MovieDetailViewController {
     
@@ -359,7 +330,7 @@ extension MovieDetailViewController {
     }
     
     private func updateLikeButton() {
-        let movieId = result?.id ?? 0
+        let movieId = movieDetailViewModel.output.result.value?.id ?? 0
         let heartImage = UIImage(systemName: UserDefaultsManager.shared.likedMovies[String(movieId)] == true ? "heart.fill" : "heart")
         self.navigationItem.rightBarButtonItem?.image = heartImage
     }

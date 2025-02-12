@@ -28,7 +28,12 @@ final class BackdropCollectionViewCell: BaseCollectionViewCell {
         
     }
     
-    func configureData(_ back: BackdropDetail) {
+    func configureData(_ back: BackdropDetail?) {
+        
+        guard let back else {
+            return
+        }
+        
         let backUrl = URL(string: "https://image.tmdb.org/t/p/w500\(back.file_path)")
         backDropImage.kf.setImage(with: backUrl)
     }

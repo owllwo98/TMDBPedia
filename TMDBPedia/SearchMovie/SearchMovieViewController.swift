@@ -13,9 +13,6 @@ class SearchMovieViewController: UIViewController {
     
     let searchMovieViewModel =  SearchMovieViewModel()
     
-//    var query: String = ""
-//    var page: Int = 1
-//    var isEnd: Bool = false
     var contents: searchDelegate?
     
     var searchBar: UISearchBar = {
@@ -42,8 +39,6 @@ class SearchMovieViewController: UIViewController {
     let titleView: UIView = UIView()
     
     lazy var movieCollectionView = createSearchMovieCollectionView()
-    
-//    var movieList: [Result] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -172,8 +167,9 @@ extension SearchMovieViewController: UICollectionViewDelegate, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = MovieDetailViewController()
-        vc.result = searchMovieViewModel.output.movieList.value[indexPath.item]
-        vc.id = searchMovieViewModel.output.movieList.value[indexPath.item].id
+        vc.movieDetailViewModel.input.result.value = searchMovieViewModel.output.movieList.value[indexPath.item]
+        
+        vc.movieDetailViewModel.input.request.value = ()
         
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -181,11 +177,6 @@ extension SearchMovieViewController: UICollectionViewDelegate, UICollectionViewD
 
 extension SearchMovieViewController: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-//        for item in indexPaths {
-//            if searchMovieViewModel.output.movieList.value.count - 5 == item.item && !searchMovieViewModel.output.isEnd.value {
-//                searchMovieViewModel.input.page.value += 1
-//            }
-//        }
         searchMovieViewModel.input.indexPath.value = indexPaths
     }
 }
@@ -197,16 +188,16 @@ extension SearchMovieViewController: UISearchBarDelegate {
     
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print(#function)
         dissmissKeyboard()
         
         guard let text = searchBar.text else {
             return
         }
         
-        guard let search = searchBar.text else {
-            return
-        }
-        contents?.searchReceived(value: search)
+
+        
+        contents?.searchReceived(value: text)
         
         searchMovieViewModel.input.page.value = 1
         searchMovieViewModel.input.query.value = text
