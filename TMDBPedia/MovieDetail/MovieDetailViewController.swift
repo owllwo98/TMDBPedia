@@ -135,6 +135,12 @@ final class MovieDetailViewController: UIViewController {
                 UILabel.addImageLabel(genreLabel, value[0] + "," + value[1], "film.fill")
             }
         }
+        
+        movieDetailViewModel.output.moreButton.lazyBind {[weak self] value in
+            guard let self = self else { return }
+            moreButton.setTitle(value ? "More" : "Hide", for: .normal)
+            Synopsis.numberOfLines = value ? 5 : 3
+        }
     }
     
     @objc
@@ -148,7 +154,7 @@ final class MovieDetailViewController: UIViewController {
     
     @objc
     func moreButtonTapped() {
-        Synopsis.numberOfLines = 5
+        movieDetailViewModel.input.moreButton.value = ()
     }
     
     func configureHierarchy() {

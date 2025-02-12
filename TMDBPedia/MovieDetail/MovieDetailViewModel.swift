@@ -17,6 +17,7 @@ class MovieDetailViewModel: BaseViewModel {
         let movieData: Observable<Movie?> = Observable(nil)
         let request: Observable<Void?> = Observable(nil)
         let likeButton: Observable<Int> = Observable(0)
+        let moreButton: Observable<Void?> = Observable(nil)
     }
     
     struct Output {
@@ -25,6 +26,8 @@ class MovieDetailViewModel: BaseViewModel {
         let creditData: Observable<Credit?> = Observable(nil)
         let likeButton: Observable<Void?> = Observable(nil)
         let genre: Observable<[String]> = Observable([])
+        let moreButton: Observable<Bool> = Observable(false)
+        let SynopsisLine: Observable<Int> = Observable(3)
     }
     
     init() {
@@ -57,6 +60,11 @@ class MovieDetailViewModel: BaseViewModel {
         input.likeButton.lazyBind { [weak self] _ in
             guard let self = self else { return }
             likeButtonTapped()
+        }
+        
+        input.moreButton.lazyBind { [weak self] _ in
+            guard let self = self else { return }
+            moreButtonTapped()
         }
     }
     
@@ -121,5 +129,9 @@ class MovieDetailViewModel: BaseViewModel {
         
         UserDefaultsManager.shared.likedMovies = likedMovies
         output.likeButton.value = ()
+    }
+    
+    private func moreButtonTapped() {
+        output.moreButton.value.toggle()
     }
 }
