@@ -136,7 +136,6 @@ final class MovieDetailViewController: UIViewController {
             
         }
         
-        
         movieDetailViewModel.output.movieImageData.bind { [weak self] value in
             guard let self = self else { return }
     
