@@ -28,7 +28,11 @@ class PosterCollectionViewCell: BaseCollectionViewCell {
         
     }
     
-    func configureData(_ post: PosterDetail) {
+    func configureData(_ post: PosterDetail?) {
+        guard let post else {
+            return
+        }
+        
         let posterURL = URL(string: "https://image.tmdb.org/t/p/w500\(post.file_path)")
         posterImageView.kf.setImage(with: posterURL)
         

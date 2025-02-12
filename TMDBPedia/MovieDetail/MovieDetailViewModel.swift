@@ -24,6 +24,7 @@ class MovieDetailViewModel: BaseViewModel {
         let result: Observable<Result?> = Observable(nil)
         let creditData: Observable<Credit?> = Observable(nil)
         let likeButton: Observable<Void?> = Observable(nil)
+        let genre: Observable<[String]> = Observable([])
     }
     
     init() {
@@ -49,6 +50,7 @@ class MovieDetailViewModel: BaseViewModel {
             guard let self = self else { return }
             fetchPosterData()
             fetchCastData()
+            validationGenre()
         }
         
         input.likeButton.lazyBind { [weak self] _ in
@@ -81,6 +83,26 @@ class MovieDetailViewModel: BaseViewModel {
     }
     
     private func validationGenre() {
+        switch output.result.value?.genre_ids.count {
+        case 0:
+            output.genre.value = []
+        case 1:
+            let genre1 = Genre(rawValue: output.result.value?.genre_ids[0] ?? 0)?.name
+            guard let genre1 else {
+                return
+            }
+            output.genre.value.append(genre1)
+        default:
+            let genre1 = Genre(rawValue: output.result.value?.genre_ids[0] ?? 0)?.name
+            let genre2 = Genre(rawValue: output.result.value?.genre_ids[1] ?? 0)?.name
+            guard let genre1, let genre2 else {
+                return
+            }
+            output.genre.value.append(genre1)
+            output.genre.value.append(genre2)
+            print(output.genre.value)
+        }
+        
     }
     
     private func likeButtonTapped() {

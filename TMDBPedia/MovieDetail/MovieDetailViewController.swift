@@ -13,7 +13,6 @@ final class MovieDetailViewController: UIViewController {
     
     let movieDetailViewModel = MovieDetailViewModel()
 
-    
     lazy var releaseDate: UILabel = {
         let label = UILabel()
         UILabel.addImageLabel(label, movieDetailViewModel.output.result.value?.release_date ?? "", "calendar")
@@ -28,24 +27,7 @@ final class MovieDetailViewController: UIViewController {
         return label
     }()
     
-    private lazy var genreLabel: UILabel = {
-        let label = UILabel()
-        
-        if movieDetailViewModel.output.result.value?.genre_ids.count ?? 0 == 0 {
-            UILabel.addImageLabel(label, "", "film.fill")
-            return label
-        } else if movieDetailViewModel.output.result.value?.genre_ids.count ?? 0 == 1 {
-            let genre1 = Genre(rawValue: movieDetailViewModel.output.result.value?.genre_ids[0] ?? 0)?.name
-            UILabel.addImageLabel(label, (genre1 ?? ""), "film.fill")
-            return label
-        } else {
-            let genre1 = Genre(rawValue: movieDetailViewModel.output.result.value?.genre_ids[0] ?? 0)?.name
-            let genre2 = Genre(rawValue: movieDetailViewModel.output.result.value?.genre_ids[1] ?? 0)?.name
-    
-            UILabel.addImageLabel(label, (genre1 ?? "") + "," + (genre2 ?? ""), "film.fill")
-            return label
-        }
-    }()
+    private let genreLabel: UILabel = UILabel()
     
     let castLabel: UILabel = {
         let label = UILabel()
@@ -132,16 +114,31 @@ final class MovieDetailViewController: UIViewController {
         movieDetailViewModel.output.result.bind { [weak self] value in
             guard let self = self else { return }
             Synopsis.text = value?.overview
-            navigationItem.title = value?.title
+            self.navigationItem.title = value?.title
             
         }
         
-        movieDetailViewModel.output.movieImageData.bind { [weak self] value in
+        movieDetailViewModel.output.movieImageData.lazyBind { [weak self] value in
             guard let self = self else { return }
-    
             backDropCollectionView.reloadData()
             posterCollectionView.reloadData()
+        }
+        
+        movieDetailViewModel.output.creditData.lazyBind { [weak self] value in
+            guard let self = self else { return }
             castCollectionView.reloadData()
+        }
+        
+        movieDetailViewModel.output.genre.bind { [weak self] value in
+            guard let self = self else { return }
+            switch value.count {
+            case 0:
+                UILabel.addImageLabel(genreLabel, "", "film.fill")
+            case 1:
+                UILabel.addImageLabel(genreLabel, value[0], "film.fill")
+            default:
+                UILabel.addImageLabel(genreLabel, value[0] + "," + value[1], "film.fill")
+            }
         }
     }
     
@@ -266,22 +263,25 @@ extension MovieDetailViewController: UICollectionViewDelegate, UICollectionViewD
         
         if collectionView == backDropCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BackdropCollectionViewCell.id, for: indexPath) as! BackdropCollectionViewCell
-            cell.configureData(movieDetailViewModel.output.movieImageData.value?.backdrops[indexPath.item])
+            
+            movieDetailViewModel.output.movieImageData.bind { value in
+                cell.configureData(value?.backdrops[indexPath.item])
+            }
+            
             return cell
         } else if collectionView == castCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CastCollectionViewCell.id, for: indexPath) as! CastCollectionViewCell
-            if let cast = movieDetailViewModel.output.creditData.value?.cast {
-                cell.configureData(cast[indexPath.item])
-            } else{
-                
-            }
+
+                movieDetailViewModel.output.creditData.bind { value in
+                    cell.configureData(value?.cast[indexPath.item])
+                }
+
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCollectionViewCell.id, for: indexPath) as! PosterCollectionViewCell
-            if let posterList = movieDetailViewModel.output.movieImageData.value?.posters {
-                cell.configureData(posterList[indexPath.item])
-            } else{
-                
+
+            movieDetailViewModel.output.movieImageData.bind { value in
+                cell.configureData(value?.posters[indexPath.item])
             }
             return cell
         }
