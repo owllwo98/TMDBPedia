@@ -40,6 +40,7 @@ class MovieDetailViewModel: BaseViewModel {
             guard let self = self else { return }
             fetchPosterData()
             fetchCastData()
+            validationGenre()
         }
         
         input.result.bind { value in
@@ -100,7 +101,6 @@ class MovieDetailViewModel: BaseViewModel {
             }
             output.genre.value.append(genre1)
             output.genre.value.append(genre2)
-            print(output.genre.value)
         }
         
     }

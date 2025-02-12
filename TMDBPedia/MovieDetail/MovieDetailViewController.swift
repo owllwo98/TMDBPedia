@@ -73,12 +73,7 @@ final class MovieDetailViewController: UIViewController {
         return label
     }()
     
-    private let backPage: UIPageControl = {
-        let pc = UIPageControl()
-        
-        
-        return pc
-    }()
+    private let pageControl = UIPageControl()
     
     let verticalScrollView: UIScrollView = UIScrollView()
     let contentView = UIView()
@@ -105,16 +100,14 @@ final class MovieDetailViewController: UIViewController {
         bindData()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        updateLikeButton()
-    }
-    
     func bindData() {
         movieDetailViewModel.output.result.bind { [weak self] value in
             guard let self = self else { return }
             Synopsis.text = value?.overview
             self.navigationItem.title = value?.title
+            
+            let heartImage = UIImage(systemName: UserDefaultsManager.shared.likedMovies[String(value?.id ?? 0)] == true ? "heart.fill" : "heart")
+            self.navigationItem.rightBarButtonItem?.image = heartImage
             
         }
         
@@ -122,6 +115,8 @@ final class MovieDetailViewController: UIViewController {
             guard let self = self else { return }
             backDropCollectionView.reloadData()
             posterCollectionView.reloadData()
+            
+            pageControl.numberOfPages = min(value?.backdrops.count ?? 0, 5)
         }
         
         movieDetailViewModel.output.creditData.lazyBind { [weak self] value in
@@ -145,7 +140,10 @@ final class MovieDetailViewController: UIViewController {
     @objc
     func likeButtonTapped(_ sender: UIButton) {
         movieDetailViewModel.input.likeButton.value = sender.tag
-        updateLikeButton()
+
+        let movieId = movieDetailViewModel.output.result.value?.id ?? 0
+        let heartImage = UIImage(systemName: UserDefaultsManager.shared.likedMovies[String(movieId)] == true ? "heart.fill" : "heart")
+        self.navigationItem.rightBarButtonItem?.image = heartImage
     }
     
     @objc
@@ -157,7 +155,7 @@ final class MovieDetailViewController: UIViewController {
         view.addSubview(verticalScrollView)
         verticalScrollView.addSubview(contentView)
         
-        [backDropCollectionView, releaseDate, voteaverage, genreLabel, sectionLabel, moreButton, Synopsis, castLabel, castCollectionView, posterLabel, posterCollectionView].forEach {
+        [backDropCollectionView, pageControl, releaseDate, voteaverage, genreLabel, sectionLabel, moreButton, Synopsis, castLabel, castCollectionView, posterLabel, posterCollectionView].forEach {
             contentView.addSubview($0)
         }
         
@@ -189,6 +187,11 @@ final class MovieDetailViewController: UIViewController {
             make.top.equalToSuperview()
             make.horizontalEdges.equalToSuperview()
             make.height.equalTo(UIScreen.main.bounds.height / 3)
+        }
+        
+        pageControl.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(backDropCollectionView.snp.bottom).inset(8)
         }
         
         releaseDate.snp.makeConstraints { make in
@@ -286,6 +289,13 @@ extension MovieDetailViewController: UICollectionViewDelegate, UICollectionViewD
             return cell
         }
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == backDropCollectionView {
+            let pageIndex = round(scrollView.contentOffset.x / scrollView.frame.width)
+            pageControl.currentPage = Int(pageIndex)
+        }
+    }
 }
 
 
@@ -328,9 +338,4 @@ extension MovieDetailViewController {
         return collectionView
     }
     
-    private func updateLikeButton() {
-        let movieId = movieDetailViewModel.output.result.value?.id ?? 0
-        let heartImage = UIImage(systemName: UserDefaultsManager.shared.likedMovies[String(movieId)] == true ? "heart.fill" : "heart")
-        self.navigationItem.rightBarButtonItem?.image = heartImage
-    }
 }
